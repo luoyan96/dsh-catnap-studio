@@ -54,7 +54,9 @@
     "assets": "node scripts/embed-cat.mjs",
     "build": "pnpm run assets && tsdown",
     "prepare": "pnpm run build",
+    "pretypecheck": "pnpm run assets",
     "typecheck": "tsc --noEmit",
+    "pretest": "pnpm run assets",
     "test": "vitest run",
     "pack:check": "pnpm pack --dry-run",
     "ci": "pnpm run typecheck && pnpm test && pnpm run build && pnpm run pack:check"
