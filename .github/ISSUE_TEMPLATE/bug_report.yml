@@ -1,0 +1,44 @@
+name: Bug report
+description: Report a reproducible Catnap Studio problem
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Please remove private session content and credentials before submitting.
+  - type: input
+    id: dsh-version
+    attributes:
+      label: DSH version
+    validations:
+      required: true
+  - type: dropdown
+    id: theme
+    attributes:
+      label: Theme
+      options:
+        - Warm Paper Den
+        - Moonlit Guardian
+        - Cat Atelier
+        - All themes
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      placeholder: Tell us what you did and what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: OS, browser, Node.js version, and viewport size.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots or console output
+      description: Do not include secrets or private conversation content.

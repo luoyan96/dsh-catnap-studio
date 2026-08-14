@@ -1,0 +1,5 @@
+# Catnap Studio skin bundle patch. Install the directory with `dsh plugin`
+# and restart the web profile to activate the client entry.
+- insert:
+    - id: ui-skin-catnap
+      name: 'dsh-client-ui-skin-catnap'

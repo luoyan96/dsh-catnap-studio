@@ -1,0 +1,23 @@
+name: Feature request
+description: Suggest an improvement to the cat skin pack
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: User need
+      description: Describe the user problem or desired experience.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: Visual references
+      description: Attach relevant screenshots or design references for presentation changes.

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DeepSeek Harness</title>
+    <style>
+      :root { font-family: "Segoe UI", "PingFang SC", sans-serif; color: #1f2937; background: #f5f6f7; }
+      * { box-sizing: border-box; }
+      html, body, #root { width: 100%; height: 100%; margin: 0; }
+      body { overflow: hidden; }
+      button, textarea { font: inherit; color: inherit; }
+      button { color: var(--dsw-alias-label-primary, #1f2937); border: 1px solid var(--dsw-alias-border-l2, #d8dde5); background: var(--dsw-alias-bg-layer-1, #fff); cursor: pointer; }
+      #root { display: grid; grid-template-columns: 318px minmax(0, 1fr); }
+      [data-pane="sidebar"] { min-width: 0; border-right: 1px solid var(--dsw-alias-border-l1, #e5e7eb); }
+      [data-pane="sidebar"] > div { height: 100%; padding: 18px; overflow: hidden auto; }
+      .brand { display: flex; align-items: center; height: 72px; margin: -18px -18px 16px; padding: 0 22px; font-size: 21px; font-weight: 720; }
+      .brand small { margin-left: 7px; padding: 3px 6px; color: #fff; border-radius: 5px; background: var(--dsw-alias-brand-primary, #4f7cff); font-size: 10px; letter-spacing: .08em; }
+      .brand .collapse { margin-left: auto; padding: 7px 9px; border: 0; background: transparent; }
+      .new-session { width: 100%; height: 48px; margin-bottom: 14px; font-weight: 600; }
+      .quick { display: grid; gap: 4px; margin-bottom: 18px; }
+      .quick button { height: 40px; padding: 0 14px; text-align: left; background: var(--dsw-specific-selector, #edf2f8); }
+      .section-title { display: flex; align-items: center; margin: 12px 4px 10px; color: var(--dsw-alias-label-secondary, #6b7280); font-size: 15px; }
+      .section-title span { flex: 1; }
+      .section-title button { min-width: 42px; height: 32px; margin-left: 5px; padding-inline: 8px; font-size: 12px; }
+      .workspace { margin-bottom: 16px; }
+      .workspace-name { display: flex; align-items: center; gap: 8px; height: 37px; padding: 0 8px; font-weight: 620; }
+      .row { display: flex; align-items: center; height: 38px; margin: 2px 0; padding: 0 12px 0 30px; border-radius: 8px; color: var(--dsw-alias-label-primary, #1f2937); }
+      .row time { margin-left: auto; color: var(--dsw-alias-label-tertiary, #7f8793); font-size: 12px; }
+      .row.active { background: var(--dsw-specific-sidebar-nav-item-active, #e8eef8); box-shadow: inset 3px 0 var(--dsw-alias-brand-primary, #4f7cff); }
+      .folder-list { display: grid; gap: 4px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--dsw-alias-border-l1, #e5e7eb); }
+      .folder { height: 38px; padding: 0 8px; }
+      [data-pane="conversation"] { position: relative; min-width: 0; overflow: hidden; }
+      .conversation-shell { display: grid; grid-template-rows: 1fr; height: 100%; }
+      .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 0; padding: 0 10vw 8vh; }
+      .active-state { display: none; height: 100%; overflow: hidden auto; }
+      body[data-preview-state="active"] .empty-state { display: none; }
+      body[data-preview-state="active"] .active-state { display: grid; grid-template-rows: auto 1fr auto; }
+      .chat-header { display: flex; align-items: center; height: 58px; padding: 0 28px; border-bottom: 1px solid var(--dsw-alias-border-l1, #e5e7eb); background: var(--dsw-alias-bg-layer-1, #fff); font-weight: 680; }
+      .chat-header small { margin-left: auto; color: var(--dsw-alias-label-secondary, #6b7280); font: 12px/1.2 var(--ds-font-family-code, monospace); }
+      .messages { width: min(820px, calc(100% - 64px)); margin: 0 auto; padding: 38px 0 28px; }
+      .message-label { margin: 0 0 10px; color: var(--dsw-alias-label-secondary, #6b7280); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+      .message { margin-bottom: 26px; font-size: 15px; line-height: 1.72; }
+      .message.user { width: fit-content; max-width: 78%; margin-left: auto; padding: 12px 16px; border: 1px solid var(--dsw-alias-border-l2, #d8dde5); border-radius: 12px; background: var(--dsw-specific-bubble, #edf2f8); }
+      .result-card { padding: 18px; border: 1px solid var(--dsw-alias-border-l2, #d8dde5); border-radius: 12px; background: var(--dsw-alias-bg-layer-1, #fff); box-shadow: 0 10px 28px rgba(45, 52, 64, .07); }
+      .result-card strong { display: block; margin-bottom: 8px; }
+      .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+      .result-grid span { padding: 10px; border: 1px solid var(--dsw-alias-border-l1, #e5e7eb); border-radius: 8px; background: var(--dsw-alias-bg-layer-2, #f4f5f7); font-size: 13px; }
+      .active-composer-wrap { width: min(820px, calc(100% - 64px)); margin: 0 auto; padding: 0 0 42px; }
+      .active-composer-wrap .composer { height: 132px; }
+      .active-composer-wrap .composer textarea { height: 78px; }
+      .headline { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; font-size: 29px; font-weight: 700; color: var(--dsw-alias-label-primary, #1f2937); }
+      .preview-label { padding: 4px 9px; border: 1px solid var(--dsw-alias-border-l2, #d5dae1); border-radius: 7px; color: var(--dsw-alias-label-secondary, #6b7280); background: var(--dsw-alias-bg-layer-2, #f4f5f7); font: 12px/1.2 var(--ds-font-family-code, monospace); }
+      .composer-wrap { width: min(860px, 100%); }
+      .composer-tools { display: flex; gap: 10px; margin: 0 0 12px 5px; }
+      .composer-tools button { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 13px; }
+      .composer { position: relative; height: 198px; border: 1px solid var(--dsw-alias-border-l2, #d8dde5); border-radius: 14px; background: var(--dsw-specific-input-major, #fff); box-shadow: 0 18px 52px rgba(45, 52, 64, .08); }
+      .composer textarea { width: 100%; height: 136px; padding: 18px 19px; resize: none; border: 0; outline: 0; background: transparent; font-size: 16px; }
+      .composer-actions { position: absolute; right: 12px; bottom: 10px; left: 12px; display: flex; align-items: center; gap: 10px; }
+      .composer-actions button { min-width: 40px; height: 40px; padding-inline: 10px; }
+      .composer-actions .permission { width: 72px; }
+      .composer-actions .spacer { flex: 1; }
+      .composer-actions .send { color: #fff; border-color: transparent; background: var(--dsw-alias-button-primary-fill, #4f7cff); font-size: 14px; }
+      .icon { display: inline-flex; width: 17px; height: 17px; vertical-align: -3px; }
+      @media (max-width: 900px) { #root { grid-template-columns: 248px minmax(0, 1fr); } .empty-state { padding-inline: 5vw; } .composer-wrap { width: min(640px, 100%); } }
+    </style>
+    <script>
+      window.__ModuleLoader__ = {
+        load(entry) {
+          window.catnapPlugin = entry.factory(() => { throw new Error('Unexpected runtime dependency') })
+        },
+      }
+    </script>
+  </head>
+  <body>
+    <main id="root">
+      <aside data-pane="sidebar">
+        <div>
+          <div class="brand">
+            deepseek <small>HARNESS</small>
+            <button class="collapse" aria-label="折叠侧栏">收起</button>
+          </div>
+          <button class="new-session">New Session</button>
+          <div class="quick"><button>会话</button><button>素材</button></div>
+          <div class="section-title"><span>Workspaces</span><button aria-label="搜索">搜索</button><button aria-label="筛选">筛选</button><button aria-label="添加">添加</button></div>
+          <section class="workspace">
+            <div class="workspace-name"><span>dsh-web-ui</span></div>
+            <div class="row active">Refactor the skin layer</div>
+            <div class="row">Fix deploy script <time>10h</time></div>
+            <div class="row">Tidy up gallery README <time>2d</time></div>
+            <div class="row">Demo session <time>3d</time></div>
+            <div class="row">Refactor the skin layer <time>now</time></div>
+          </section>
+          <div class="folder-list"><div class="folder">deepseek-harness</div><div class="folder">codex-dream-skin</div><div class="folder">demo</div><div class="folder">CITKABE</div><div class="folder">dsh-web-ui</div></div>
+        </div>
+      </aside>
+      <section data-pane="conversation">
+        <div class="conversation-shell">
+          <div class="empty-state">
+            <div class="headline">
+              <span>Let's start building</span><small class="preview-label">Preview</small>
+            </div>
+            <div class="composer-wrap">
+              <div class="composer-tools"><button>代码</button><button>图像</button></div>
+              <div class="composer">
+                <textarea aria-label="消息" placeholder="Describe what you want to build"></textarea>
+                <div class="composer-actions"><button aria-label="添加">上传</button><button class="permission" aria-label="权限">权限</button><span class="spacer"></span><button aria-label="选项">选项</button><button class="send" aria-label="发送">发送</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="active-state">
+            <header class="chat-header">Refactor the skin layer <small>preview session</small></header>
+            <div class="messages">
+              <div class="message user">把猫咪主题插件改成三套皮肤，并且让用户可以随时切换。</div>
+              <div class="message">
+                <div class="message-label">Catnap Studio</div>
+                <div class="result-card">
+                  <strong>三套主题已经接入同一个插件</strong>
+                  主题切换会即时更新工作区、状态栏和猫咪插画，同时保留原有会话与输入流程。
+                  <div class="result-grid"><span>暖纸猫窝<br />安静温暖</span><span>月夜守护<br />沉浸专注</span><span>猫咪工坊<br />轻快协作</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="active-composer-wrap">
+              <div class="composer-tools"><button>代码</button><button>图像</button></div>
+              <div class="composer">
+                <textarea aria-label="继续消息" placeholder="继续描述你想调整的内容"></textarea>
+                <div class="composer-actions"><button aria-label="添加">上传</button><button class="permission" aria-label="权限">权限</button><span class="spacer"></span><button aria-label="选项">选项</button><button class="send" aria-label="发送">发送</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="../lib/client.js"></script>
+    <script>
+      const params = new URLSearchParams(location.search)
+      const requestedTheme = params.get('theme')
+      if (['warm', 'moonlit', 'atelier'].includes(requestedTheme)) {
+        localStorage.setItem('dsh-catnap-theme', requestedTheme)
+      }
+      if (params.get('state') === 'active') document.body.dataset.previewState = 'active'
+      const disposers = []
+      window.catnapPlugin.apply({ effect(factory) { disposers.push(factory()) } })
+      window.addEventListener('beforeunload', () => disposers.reverse().forEach((dispose) => dispose()))
+    </script>
+  </body>
+</html>

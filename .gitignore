@@ -1,0 +1,31 @@
+# Dependencies and local package-manager state
+node_modules/
+.pnpm-store/
+
+# Build and generated output
+lib/
+coverage/
+release/
+dist/
+*.tgz
+*.tsbuildinfo
+src/client/generated/
+
+# Local preview/runtime residue
+.preview-server*.log
+*.log
+
+# Environment and editor files
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Image-generation intermediates not used by the reproducible build
+design/assets/*-key.png
+design/assets/atelier-tuxedo.png
+design/assets/moonlit-guardian.png
+design/assets/moonlit-sleeper.png

@@ -1,0 +1,34 @@
+{
+  "id": "catnap",
+  "name": "猫咪主题工坊",
+  "nameEn": "Catnap Studio",
+  "author": "luo",
+  "tagline": "一个插件 · 三种猫咪主题 · 随时切换",
+  "description": "一款包含三种可选外观的 DSH 猫咪主题皮肤。暖纸猫窝、月夜守护和猫咪工坊共用一个安装包，可从底部状态栏即时切换并记住选择。",
+  "tags": [
+    "cat",
+    "cozy",
+    "theme-pack",
+    "warm-paper",
+    "moonlit",
+    "atelier"
+  ],
+  "accent": "#e9782d",
+  "bodyAttr": "data-dsh-catnap",
+  "package": "dsh-client-ui-skin-catnap",
+  "wiring": {
+    "id": "ui-skin-catnap",
+    "bundleWired": false
+  },
+  "preview": {
+    "light": "preview/warm.png",
+    "dark": "preview/moonlit.png",
+    "atelier": "preview/atelier.png"
+  },
+  "variants": [
+    { "id": "warm", "name": "暖纸猫窝", "preview": "preview/warm.png" },
+    { "id": "moonlit", "name": "月夜守护", "preview": "preview/moonlit.png" },
+    { "id": "atelier", "name": "猫咪工坊", "preview": "preview/atelier.png" }
+  ],
+  "order": 11
+}
