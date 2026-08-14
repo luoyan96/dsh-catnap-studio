@@ -25,7 +25,7 @@
 ## 从源码安装
 
 ```sh
-git clone <repository-url> dsh-catnap-studio
+git clone https://github.com/luoyan96/dsh-catnap-studio.git
 cd dsh-catnap-studio
 pnpm install
 pnpm run ci

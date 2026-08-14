@@ -25,7 +25,7 @@ Every cat illustration and paper texture is embedded in the browser bundle. The 
 ## Install from source
 
 ```sh
-git clone <repository-url> dsh-catnap-studio
+git clone https://github.com/luoyan96/dsh-catnap-studio.git
 cd dsh-catnap-studio
 pnpm install
 pnpm run ci
