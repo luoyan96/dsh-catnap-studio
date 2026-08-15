@@ -26,7 +26,9 @@ function cssModulesPlugin() {
         minify: true,
       })
       const classMap: Record<string, string> = {}
-      for (const [local, value] of Object.entries(result.exports ?? {})) classMap[local] = value.name
+      const exports = Object.entries(result.exports ?? {})
+        .sort(([left], [right]) => left.localeCompare(right, 'en'))
+      for (const [local, value] of exports) classMap[local] = value.name
       return [
         `const css = ${JSON.stringify(result.code.toString())};`,
         `const tagId = ${JSON.stringify(`${PLUGIN_ID}/${basename(fileId)}`)};`,
