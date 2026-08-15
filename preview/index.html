@@ -65,9 +65,18 @@
       @media (max-width: 900px) { #root { grid-template-columns: 248px minmax(0, 1fr); } .empty-state { padding-inline: 5vw; } .composer-wrap { width: min(640px, 100%); } }
     </style>
     <script>
+      const previewModules = new Map()
       window.__ModuleLoader__ = {
         load(entry) {
-          window.catnapPlugin = entry.factory(() => { throw new Error('Unexpected runtime dependency') })
+          // The production bundle embeds the five workbench client modules as
+          // nested DSH loader entries. The standalone preview only exercises
+          // Catnap's theme and companion UI, so register those nested entries
+          // as inert modules instead of evaluating their DSH runtime imports.
+          if (entry.id !== 'dsh-client-ui-skin-catnap') {
+            previewModules.set(entry.id, { apply() {} })
+            return
+          }
+          window.catnapPlugin = entry.factory((id) => previewModules.get(id) ?? {})
         },
       }
     </script>

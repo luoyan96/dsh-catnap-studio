@@ -83,6 +83,27 @@ body[data-dsh-catnap] {
   background-image: var(--catnap-texture);
   background-size: 512px 512px;
   padding: 42px 8px 30px;
+  isolation: isolate;
+}
+
+body[data-dsh-catnap]::before {
+  position: fixed;
+  z-index: 0;
+  inset: 42px 8px 30px max(250px, 19vw);
+  content: "";
+  pointer-events: none;
+  background-image: var(--catnap-hero-art);
+  background-repeat: no-repeat;
+  background-position: 68% 50%;
+  background-size: min(56vw, 780px) auto;
+  opacity: 0.085;
+  filter: saturate(0.86);
+}
+
+body[data-dsh-catnap][data-catnap-theme="moonlit"]::before {
+  background-position: 74% 62%;
+  opacity: 0.16;
+  filter: saturate(0.76) brightness(0.72);
 }
 
 body[data-dsh-catnap][data-catnap-theme="warm"] {
@@ -195,11 +216,13 @@ body[data-dsh-catnap][data-catnap-theme="atelier"] {
 }
 
 body[data-dsh-catnap] [id="root"] {
+  position: relative;
+  z-index: 1;
   box-sizing: border-box;
   overflow: hidden;
   border: 1px solid var(--catnap-border-strong);
   border-radius: var(--catnap-radius);
-  background-color: var(--catnap-canvas);
+  background-color: color-mix(in srgb, var(--catnap-canvas) 86%, transparent);
   background-image: var(--catnap-texture);
   background-size: 768px 768px;
   box-shadow: var(--catnap-shadow);
@@ -291,7 +314,7 @@ body[data-dsh-catnap] [data-pane="sidebar"] > div > :first-child {
 }
 
 body[data-dsh-catnap] [data-pane="conversation"] {
-  background-color: color-mix(in srgb, var(--catnap-canvas) 92%, transparent);
+  background-color: color-mix(in srgb, var(--catnap-canvas) 76%, transparent);
   background-image: var(--catnap-texture);
   background-size: 768px 768px;
 }
@@ -440,6 +463,618 @@ body[data-dsh-catnap] .themeOption[aria-checked="true"] {
   background: var(--catnap-active);
 }
 
+body[data-dsh-catnap] .studioButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: 58px;
+  height: 34px;
+  padding: 0;
+  color: var(--catnap-ink);
+  border: 1px solid var(--catnap-border);
+  border-radius: 7px !important;
+  background: var(--catnap-paper);
+  font: inherit;
+  cursor: pointer;
+}
+
+body[data-dsh-catnap] .studioButton img {
+  width: 54px;
+  height: 32px;
+  object-fit: contain;
+}
+
+body[data-dsh-catnap] .studioButton span { display: none; }
+
+/* Theme switching now lives in Settings > General > Appearance. */
+body[data-dsh-catnap] .themeSelector,
+body[data-dsh-catnap] .themeMenu {
+  display: none !important;
+}
+
+body[data-dsh-catnap] .settingsThemeBlock {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--catnap-border);
+  color: var(--catnap-ink);
+  font-family: var(--dsw-font-family);
+}
+
+body[data-dsh-catnap] .settingsThemeHeader {
+  display: grid;
+  gap: 4px;
+}
+
+body[data-dsh-catnap] .settingsThemeHeader strong {
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+body[data-dsh-catnap] .settingsThemeHeader span {
+  color: var(--catnap-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+body[data-dsh-catnap] .settingsThemeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+body[data-dsh-catnap] .settingsThemeCard {
+  position: relative;
+  display: grid;
+  grid-template-columns: 68px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-height: 112px;
+  padding: 12px;
+  color: var(--catnap-ink);
+  border: 1px solid var(--catnap-border);
+  border-radius: 16px !important;
+  background: color-mix(in srgb, var(--catnap-paper) 92%, transparent);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--catnap-ink) 7%, transparent);
+  text-align: left;
+  cursor: pointer;
+}
+
+body[data-dsh-catnap] .settingsThemeCard:hover {
+  border-color: var(--catnap-border-strong);
+  background: var(--catnap-hover);
+}
+
+body[data-dsh-catnap] .settingsThemeCard[aria-pressed="true"] {
+  border-color: var(--catnap-accent);
+  background: var(--catnap-active);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--catnap-accent) 18%, transparent);
+}
+
+body[data-dsh-catnap] .settingsThemeCard > img {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+}
+
+body[data-dsh-catnap] .settingsThemeCopy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+body[data-dsh-catnap] .settingsThemeCopy strong {
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+body[data-dsh-catnap] .settingsThemeCopy small {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--catnap-muted);
+  font-size: 11px;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+body[data-dsh-catnap] .settingsThemeState {
+  justify-self: start;
+  padding: 3px 7px;
+  color: var(--catnap-accent-strong);
+  border: 1px solid color-mix(in srgb, var(--catnap-accent) 42%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--catnap-accent) 12%, transparent);
+  font-size: 10px;
+  line-height: 1;
+}
+
+body[data-dsh-catnap] .settingsStudioButton {
+  justify-self: start;
+  min-height: 38px;
+  padding: 8px 14px;
+  color: var(--catnap-ink);
+  border: 1px solid var(--catnap-border-strong);
+  border-radius: 11px !important;
+  background: var(--catnap-paper-raised);
+  font: 600 13px/1.2 var(--dsw-font-family);
+  cursor: pointer;
+}
+
+body[data-dsh-catnap] .settingsStudioButton:hover {
+  background: var(--catnap-hover);
+}
+
+body[data-dsh-catnap][data-catnap-settings-open]::before {
+  opacity: 0 !important;
+}
+
+body[data-dsh-catnap][data-catnap-settings-open] .mascot,
+body[data-dsh-catnap][data-catnap-settings-open] .companion,
+body[data-dsh-catnap][data-catnap-settings-open] .petButton {
+  display: none !important;
+}
+
+body[data-dsh-catnap][data-catnap-composer-overlay-open] .mascot,
+body[data-dsh-catnap][data-catnap-composer-overlay-open] .companion,
+body[data-dsh-catnap][data-catnap-composer-overlay-open] .petButton {
+  display: none !important;
+}
+
+/* Harness owns several first-run and settings dialogs that are not exposed
+   through the settings markers above. Keep decorative cats out of every
+   external modal while leaving Catnap Studio's own dialog untouched. */
+body[data-dsh-catnap]:has([role="dialog"]:not(.studioPanel))::before {
+  opacity: 0 !important;
+}
+
+body[data-dsh-catnap]:has([role="dialog"]:not(.studioPanel)) .mascot,
+body[data-dsh-catnap]:has([role="dialog"]:not(.studioPanel)) .companion,
+body[data-dsh-catnap]:has([role="dialog"]:not(.studioPanel)) .petButton {
+  display: none !important;
+}
+
+body[data-dsh-catnap] .studioBackdrop {
+  position: fixed;
+  z-index: 1000003;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 54px 22px 42px;
+  background: color-mix(in srgb, var(--catnap-ink) 24%, transparent);
+  backdrop-filter: blur(9px) saturate(0.86);
+}
+
+body[data-dsh-catnap] .studioBackdrop[hidden] {
+  display: none;
+}
+
+body[data-dsh-catnap] .studioPanel {
+  overflow: hidden;
+  width: min(920px, 94vw);
+  max-height: min(760px, calc(100vh - 94px));
+  color: var(--catnap-ink);
+  border: 1px solid var(--catnap-border-strong);
+  border-radius: 24px;
+  background:
+    linear-gradient(color-mix(in srgb, var(--catnap-paper) 91%, transparent), color-mix(in srgb, var(--catnap-paper-raised) 94%, transparent)),
+    var(--catnap-texture);
+  background-size: auto, 560px 560px;
+  box-shadow: 0 34px 90px color-mix(in srgb, var(--catnap-ink) 32%, transparent);
+}
+
+body[data-dsh-catnap] .studioHeader {
+  position: relative;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 126px;
+  gap: 18px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--catnap-border);
+  background: color-mix(in srgb, var(--catnap-active) 72%, transparent);
+}
+
+body[data-dsh-catnap] .studioHeader > img {
+  width: 96px;
+  height: 90px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 12px var(--catnap-border-soft));
+}
+
+body[data-dsh-catnap] .studioHeader small {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--catnap-accent);
+  font: 700 11px/1 var(--ds-font-family-code);
+  letter-spacing: 0.15em;
+}
+
+body[data-dsh-catnap] .studioHeader h2,
+body[data-dsh-catnap] .studioHeader p {
+  margin: 0;
+}
+
+body[data-dsh-catnap] .studioHeader h2 {
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+body[data-dsh-catnap] .studioHeader p {
+  margin-top: 6px;
+  color: var(--catnap-muted);
+  font-size: 13px;
+}
+
+body[data-dsh-catnap] .studioClose {
+  align-self: start;
+  padding: 7px 12px;
+  color: var(--catnap-muted);
+  background: var(--catnap-paper);
+}
+
+body[data-dsh-catnap] .studioTabs {
+  display: flex;
+  gap: 6px;
+  padding: 12px 18px 0;
+  border-bottom: 1px solid var(--catnap-border-soft);
+}
+
+body[data-dsh-catnap] .studioTab {
+  padding: 9px 15px;
+  color: var(--catnap-muted);
+  border: 1px solid transparent;
+  border-bottom: 2px solid transparent;
+  border-radius: 10px 10px 0 0 !important;
+  background: transparent;
+  box-shadow: none;
+  font-weight: 650;
+}
+
+body[data-dsh-catnap] .studioTab[aria-selected="true"] {
+  color: var(--catnap-ink);
+  border-color: var(--catnap-border-soft);
+  border-bottom-color: var(--catnap-accent);
+  background: var(--catnap-paper);
+}
+
+body[data-dsh-catnap] .studioContent {
+  overflow: auto;
+  max-height: min(520px, calc(100vh - 290px));
+  padding: 20px;
+}
+
+body[data-dsh-catnap] .studioTabPanel[hidden] {
+  display: none;
+}
+
+body[data-dsh-catnap] .sectionIntro {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+body[data-dsh-catnap] .sectionIntro strong {
+  font-size: 17px;
+}
+
+body[data-dsh-catnap] .sectionIntro span {
+  color: var(--catnap-muted);
+  font-size: 13px;
+}
+
+body[data-dsh-catnap] .themeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+body[data-dsh-catnap] .themeCard {
+  overflow: hidden;
+  display: grid;
+  min-width: 0;
+  padding: 0;
+  color: var(--catnap-ink);
+  border: 1px solid var(--catnap-border);
+  border-radius: 16px !important;
+  background: var(--catnap-paper);
+  text-align: left;
+}
+
+body[data-dsh-catnap] .themeCard[aria-pressed="true"] {
+  border-color: var(--catnap-accent);
+  box-shadow: 0 0 0 3px var(--catnap-active), 0 12px 28px var(--catnap-border-soft);
+}
+
+body[data-dsh-catnap] .themeCardVisual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 150px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--catnap-border-soft);
+  background-color: var(--catnap-paper-raised);
+  background-size: 260px 260px;
+}
+
+body[data-dsh-catnap] .themeCardVisual::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 42%;
+  content: "";
+  background: linear-gradient(transparent, color-mix(in srgb, var(--catnap-paper) 68%, transparent));
+}
+
+body[data-dsh-catnap] .themeCardVisual img {
+  z-index: 1;
+  width: 78%;
+  height: 126px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 10px var(--catnap-border-soft));
+}
+
+body[data-dsh-catnap] .themeCardCopy {
+  display: grid;
+  gap: 6px;
+  padding: 13px;
+}
+
+body[data-dsh-catnap] .themeCardCopy strong {
+  font-size: 15px;
+}
+
+body[data-dsh-catnap] .themeCardCopy small {
+  min-height: 34px;
+  color: var(--catnap-muted);
+  line-height: 1.4;
+}
+
+body[data-dsh-catnap] .themeCardState {
+  width: max-content;
+  padding: 3px 8px;
+  color: var(--catnap-link);
+  border: 1px solid var(--catnap-border);
+  border-radius: 999px;
+  background: var(--catnap-active);
+  font-size: 11px;
+}
+
+body[data-dsh-catnap] .companionCard {
+  display: grid;
+  grid-template-columns: 142px minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  padding: 20px;
+  border: 1px solid var(--catnap-border);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--catnap-active) 56%, var(--catnap-paper));
+}
+
+body[data-dsh-catnap] .companionCard > img {
+  width: 142px;
+  height: 128px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 12px var(--catnap-border-soft));
+}
+
+body[data-dsh-catnap] .companionCard > div {
+  display: grid;
+  gap: 7px;
+}
+
+body[data-dsh-catnap] .companionCard strong {
+  font-size: 22px;
+}
+
+body[data-dsh-catnap] .companionCard span,
+body[data-dsh-catnap] .companionCard small {
+  color: var(--catnap-muted);
+}
+
+body[data-dsh-catnap] .affinityTrack {
+  overflow: hidden;
+  width: min(360px, 100%);
+  height: 10px;
+  border: 1px solid var(--catnap-border);
+  border-radius: 999px;
+  background: var(--catnap-paper);
+}
+
+body[data-dsh-catnap] .affinityTrack span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--catnap-accent-dimmed), var(--catnap-accent));
+  transition: width 220ms ease;
+}
+
+body[data-dsh-catnap] .companionActions,
+body[data-dsh-catnap] .renameRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+body[data-dsh-catnap] .companionPreferences {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+body[data-dsh-catnap] .companionPreferences label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 42px;
+  padding: 9px 11px;
+  border: 1px solid var(--catnap-border);
+  border-radius: 12px;
+  background: var(--catnap-paper);
+  color: var(--catnap-ink);
+  font-size: 12px;
+}
+
+body[data-dsh-catnap] .companionPreferences input[type="range"] {
+  min-width: 70px;
+  width: 100%;
+}
+
+body[data-dsh-catnap] .companionActions button,
+body[data-dsh-catnap] .renameRow button {
+  padding: 9px 13px;
+  background: var(--catnap-paper);
+}
+
+body[data-dsh-catnap] .companionActions button:first-child {
+  color: var(--catnap-primary-invert);
+  border-color: var(--catnap-accent);
+  background: var(--catnap-accent);
+}
+
+body[data-dsh-catnap] .renameRow input {
+  flex: 1;
+  min-width: 210px;
+  padding: 9px 12px;
+}
+
+body[data-dsh-catnap] .dragHint {
+  margin: 12px 0 0;
+  color: var(--catnap-caption);
+  font-size: 12px;
+}
+
+body[data-dsh-catnap] .featureList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+}
+
+body[data-dsh-catnap] .featureItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px;
+  border: 1px solid var(--catnap-border);
+  border-radius: 14px;
+  background: var(--catnap-paper);
+}
+
+body[data-dsh-catnap] .featureItem > div {
+  display: grid;
+  gap: 4px;
+}
+
+body[data-dsh-catnap] .featureItem span {
+  color: var(--catnap-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+body[data-dsh-catnap] .featureBadge {
+  flex: none;
+  padding: 4px 8px;
+  color: var(--catnap-success) !important;
+  border: 1px solid color-mix(in srgb, var(--catnap-success) 44%, transparent);
+  border-radius: 999px;
+  background: var(--catnap-success-soft);
+  font-size: 11px !important;
+}
+
+body[data-dsh-catnap] .petButton {
+  position: fixed;
+  z-index: 120;
+  right: 34px;
+  bottom: 58px;
+  width: 168px;
+  height: 126px;
+  padding: 0;
+  touch-action: none;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  cursor: grab;
+}
+
+body[data-dsh-catnap] .petButton:active {
+  cursor: grabbing;
+}
+
+body[data-dsh-catnap] .petButton[hidden] {
+  display: none;
+}
+
+body[data-dsh-catnap] .petButton > img {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 10px color-mix(in srgb, var(--catnap-ink) 20%, transparent));
+  animation: catnap-pet-breathe 5.6s ease-in-out infinite;
+}
+
+body[data-dsh-catnap] .petBubble {
+  position: absolute;
+  right: 72%;
+  bottom: 72%;
+  display: none;
+  width: max-content;
+  max-width: 210px;
+  padding: 7px 10px;
+  color: var(--catnap-ink);
+  border: 1px solid var(--catnap-border);
+  border-radius: 12px 12px 4px 12px;
+  background: var(--catnap-paper);
+  box-shadow: 0 9px 24px var(--catnap-border-soft);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+body[data-dsh-catnap] .petBubble[data-visible="true"] {
+  display: block;
+}
+
+body[data-dsh-catnap] .petButton[data-companion-state="stretching"] > img {
+  animation: catnap-pet-stretch 800ms ease-out 1;
+}
+
+body[data-dsh-catnap] .petButton[data-companion-state="playing-yarn"] > img {
+  animation: catnap-pet-play 1.8s ease-in-out 5;
+}
+
+body[data-dsh-catnap] .petButton[data-companion-state="petted"] > img {
+  animation: catnap-pet-petted 420ms ease-out 1;
+}
+
+body[data-dsh-catnap] .petButton[data-companion-state="paused"] > img {
+  animation: none;
+}
+
+@keyframes catnap-pet-breathe {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1px); }
+}
+
+@keyframes catnap-pet-stretch {
+  0% { transform: scale(0.98, 1.01); }
+  55% { transform: scale(1.025, 0.985); }
+  100% { transform: scale(1); }
+}
+
+@keyframes catnap-pet-play {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  50% { transform: translateX(-2px) rotate(-0.6deg); }
+}
+
+@keyframes catnap-pet-petted {
+  0% { transform: scale(1); }
+  60% { transform: scale(1.018, 0.985); }
+  100% { transform: scale(1); }
+}
+
 body[data-dsh-catnap] .mascot,
 body[data-dsh-catnap] .companion {
   position: fixed;
@@ -488,14 +1123,65 @@ body[data-dsh-catnap][data-catnap-theme="atelier"] .mascot {
 
 @media (max-width: 860px) {
   body[data-dsh-catnap] .mascot,
-  body[data-dsh-catnap] .companion { display: none !important; }
+  body[data-dsh-catnap] .companion,
+  body[data-dsh-catnap] .petButton { display: none !important; }
   body[data-dsh-catnap] .statusbarCell { display: none; }
   body[data-dsh-catnap] .titlebar { padding-right: 6px; }
+  body[data-dsh-catnap]::before {
+    inset: 42px 8px 30px;
+    background-position: 76% 58%;
+    background-size: min(84vw, 620px) auto;
+  }
+  body[data-dsh-catnap] .studioPanel { width: min(720px, 100%); }
+  body[data-dsh-catnap] .themeGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body[data-dsh-catnap] .settingsThemeGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body[data-dsh-catnap] .featureList { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 560px) {
   body[data-dsh-catnap] .statusLabel { display: none; }
   body[data-dsh-catnap] .themeMenu { right: 6px; width: min(244px, calc(100vw - 12px)); }
+  body[data-dsh-catnap] .studioButton span { display: none; }
+  body[data-dsh-catnap] .studioButton { padding-right: 4px; }
+  body[data-dsh-catnap] .studioBackdrop {
+    align-items: end;
+    padding: 40px 6px 26px;
+  }
+  body[data-dsh-catnap] .studioPanel {
+    width: 100%;
+    max-height: calc(100dvh - 54px);
+    border-radius: 18px 18px 10px 10px;
+  }
+  body[data-dsh-catnap] .studioHeader {
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    padding: 14px;
+  }
+  body[data-dsh-catnap] .studioHeader > img {
+    width: 44px;
+    height: 44px;
+  }
+  body[data-dsh-catnap] .studioHeader p { display: none; }
+  body[data-dsh-catnap] .studioTabs {
+    overflow-x: auto;
+    padding: 8px 10px 0;
+  }
+  body[data-dsh-catnap] .studioTab { white-space: nowrap; }
+  body[data-dsh-catnap] .studioContent { padding: 12px; }
+  body[data-dsh-catnap] .themeGrid { grid-template-columns: 1fr; }
+  body[data-dsh-catnap] .settingsThemeGrid { grid-template-columns: 1fr; }
+  body[data-dsh-catnap] .companionCard {
+    grid-template-columns: 76px minmax(0, 1fr);
+    padding: 14px;
+  }
+  body[data-dsh-catnap] .companionCard > img {
+    width: 76px;
+    height: 76px;
+  }
+  body[data-dsh-catnap] .companionPreferences { grid-template-columns: 1fr; }
+  body[data-dsh-catnap] .petBubble {
+    right: 62%;
+    max-width: 170px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

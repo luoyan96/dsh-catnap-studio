@@ -3,12 +3,15 @@
   "name": "猫咪主题工坊",
   "nameEn": "Catnap Studio",
   "author": "luo",
-  "tagline": "一个插件 · 三种猫咪主题 · 随时切换",
-  "description": "一款包含三种可选外观的 DSH 猫咪主题皮肤。暖纸猫窝、月夜守护和猫咪工坊共用一个安装包，可从底部状态栏即时切换并记住选择。",
+  "tagline": "一个插件 · 三种猫咪主题 · 六项工作台能力",
+  "description": "面向 DSH Web UI 的猫咪主题工作台：三套可切换外观、可互动猫宠、任务看板、Git 图谱、文件预览面板、实时统计与统一插件设置。",
   "tags": [
     "cat",
     "cozy",
     "theme-pack",
+    "task-board",
+    "git",
+    "companion",
     "warm-paper",
     "moonlit",
     "atelier"

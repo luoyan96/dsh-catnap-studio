@@ -54,6 +54,11 @@ const configs: UserConfig[] = [
     fixedExtension: false,
     dts: false,
     clean: false,
+    deps: {
+      alwaysBundle: id => id.startsWith('@linxin666/') || id === 'schemastery' || id === 'zod',
+      neverBundle: id => id.startsWith('@deepseek-ai/'),
+      onlyBundle: false,
+    },
   },
   {
     name: `${PLUGIN_ID}/client`,
@@ -65,7 +70,7 @@ const configs: UserConfig[] = [
     dts: false,
     sourcemap: true,
     clean: false,
-    noExternal: () => true,
+    deps: { alwaysBundle: () => true, onlyBundle: false },
     plugins: [cssModulesPlugin()],
     outputOptions: {
       entryFileNames: 'client.js',

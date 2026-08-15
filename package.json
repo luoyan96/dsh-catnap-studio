@@ -1,7 +1,7 @@
 {
   "name": "dsh-client-ui-skin-catnap",
-  "description": "Catnap Studio skin pack for the DeepSeek Harness web UI with three selectable cat themes: Warm Paper, Moonlit Guardian, and Cat Atelier",
-  "version": "0.2.0",
+  "description": "Catnap Studio suite for DeepSeek Harness: three cat themes, an interactive cat companion, task board, Git graph, file panel, live stats, and plugin settings",
+  "version": "0.3.0",
   "keywords": [
     "deepseek-harness",
     "dsh",
@@ -22,7 +22,13 @@
       "patch": "./cordis.patch.yml"
     },
     "client": {
-      "inject": [],
+      "inject": [
+        "@deepseek-ai/dsh-client-runtime",
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-settings"
+      ],
       "platform": "web"
     }
   },
@@ -39,9 +45,15 @@
   "bugs": {
     "url": "https://github.com/luoyan96/dsh-catnap-studio/issues"
   },
+  "dependencies": {},
   "peerDependencies": {},
   "devDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
+    "@linxin666/dsh-client-ui-aionui-panel": "0.1.12",
+    "@linxin666/dsh-client-ui-git-graph": "0.1.12",
+    "@linxin666/dsh-client-ui-task-board": "0.1.12",
+    "@linxin666/dsh-client-ui-web-ui-settings": "0.1.12",
+    "@linxin666/dsh-live-stats": "0.1.12",
     "@types/node": "^22.20.0",
     "jsdom": "29.1.1",
     "lightningcss": "^1.32.0",
@@ -56,6 +68,8 @@
     "preview",
     "README.md",
     "README.en.md",
+    "THIRD_PARTY_NOTICES.md",
+    "THIRD_PARTY_LICENSES",
     "LICENSE"
   ],
   "scripts": {
