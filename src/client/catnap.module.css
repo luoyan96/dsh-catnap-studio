@@ -622,6 +622,13 @@ body[data-dsh-catnap][data-catnap-composer-overlay-open] .petButton {
   display: none !important;
 }
 
+/* Host model menus and other portalled overlays are outside the composer tree. */
+body[data-dsh-catnap][data-catnap-external-overlay-open] .mascot,
+body[data-dsh-catnap][data-catnap-external-overlay-open] .companion,
+body[data-dsh-catnap][data-catnap-external-overlay-open] .petButton {
+  display: none !important;
+}
+
 /* Harness owns several first-run and settings dialogs that are not exposed
    through the settings markers above. Keep decorative cats out of every
    external modal while leaving Catnap Studio's own dialog untouched. */

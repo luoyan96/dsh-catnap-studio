@@ -202,6 +202,32 @@ describe('Catnap Studio skin', () => {
     dispose()
   })
 
+  it('places the default companion below the composer instead of over the Files panel', () => {
+    const textarea = document.querySelector<HTMLTextAreaElement>('textarea')
+    if (textarea !== null) {
+      textarea.getBoundingClientRect = () => ({
+        x: 220,
+        y: 320,
+        top: 320,
+        right: 860,
+        bottom: 440,
+        left: 220,
+        width: 640,
+        height: 120,
+        toJSON: () => ({}),
+      })
+    }
+
+    const dispose = applySkin()
+    const pet = document.querySelector<HTMLButtonElement>('[data-skin-chrome="cat-companion"]')
+
+    expect(pet?.style.left).toBe('236px')
+    expect(pet?.style.top).toBe('512px')
+    expect(pet?.style.right).toBe('auto')
+
+    dispose()
+  })
+
   it('moves theme selection into Settings appearance and suppresses decorative cats', async () => {
     const settingsDialog = document.createElement('div')
     settingsDialog.setAttribute('role', 'dialog')
@@ -277,6 +303,23 @@ describe('Catnap Studio skin', () => {
     trigger.click()
     await new Promise(resolve => window.setTimeout(resolve, 0))
     expect(document.body.hasAttribute('data-catnap-composer-overlay-open')).toBe(false)
+
+    dispose()
+  })
+
+  it('suppresses cats for a host model menu outside the composer and restores them on close', async () => {
+    const modelMenu = document.createElement('div')
+    modelMenu.setAttribute('role', 'listbox')
+    modelMenu.textContent = '选择模型'
+    document.body.append(modelMenu)
+
+    const dispose = applySkin()
+    expect(document.body.hasAttribute('data-catnap-external-overlay-open')).toBe(true)
+
+    modelMenu.hidden = true
+    document.body.dispatchEvent(new Event('click', { bubbles: true }))
+    await new Promise(resolve => window.setTimeout(resolve, 0))
+    expect(document.body.hasAttribute('data-catnap-external-overlay-open')).toBe(false)
 
     dispose()
   })

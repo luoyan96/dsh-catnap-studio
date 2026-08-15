@@ -267,6 +267,7 @@ export function apply(ctx: Context): void {
   const originalTheme = body.getAttribute('data-catnap-theme')
   const originalSettingsOpen = body.getAttribute('data-catnap-settings-open')
   const originalComposerOverlayOpen = body.getAttribute('data-catnap-composer-overlay-open')
+  const originalExternalOverlayOpen = body.getAttribute('data-catnap-external-overlay-open')
   const originalTexture = body.style.getPropertyValue('--catnap-texture')
   const originalTexturePriority = body.style.getPropertyPriority('--catnap-texture')
   const originalHero = body.style.getPropertyValue('--catnap-hero-art')
@@ -708,6 +709,8 @@ export function apply(ctx: Context): void {
     setPauseReason('composer-overlay', composerOpen)
     const externalOverlayOpen = Array.from(document.querySelectorAll<HTMLElement>('[role="dialog"], [role="menu"], [role="listbox"]'))
       .some(element => !studioBackdrop.contains(element) && !element.hidden && element.getAttribute('aria-hidden') !== 'true')
+    if (externalOverlayOpen) body.setAttribute('data-catnap-external-overlay-open', '')
+    else body.removeAttribute('data-catnap-external-overlay-open')
     setPauseReason('external-overlay', externalOverlayOpen)
   }
 
@@ -730,16 +733,30 @@ export function apply(ctx: Context): void {
   }
 
   const positionPet = (): void => {
+    const rect = petButton.getBoundingClientRect()
+    const width = rect.width > 0 ? rect.width : 104
+    const height = rect.height > 0 ? rect.height : 128
     if (companionState.x === undefined || companionState.y === undefined) {
+      const composer = findComposer()
+      if (composer !== undefined) {
+        // Keep the default companion in the conversation's lower-left quiet area.
+        // The host's right pane contains Files / Changes and must stay unobscured.
+        const left = clamp(composer.left + 16, 8, Math.max(8, window.innerWidth - width - 8))
+        // The textarea can be smaller than the host's full composer shell.
+        // Leave room for its attach/send controls before placing the cat below it.
+        const top = clamp(composer.bottom + 72, 42, Math.max(42, window.innerHeight - height - 28))
+        petButton.style.left = `${Math.round(left)}px`
+        petButton.style.top = `${Math.round(top)}px`
+        petButton.style.right = 'auto'
+        petButton.style.bottom = 'auto'
+        return
+      }
       petButton.style.removeProperty('left')
       petButton.style.removeProperty('top')
       petButton.style.removeProperty('right')
       petButton.style.removeProperty('bottom')
       return
     }
-    const rect = petButton.getBoundingClientRect()
-    const width = rect.width > 0 ? rect.width : 104
-    const height = rect.height > 0 ? rect.height : 128
     companionState.x = clamp(companionState.x, 8, Math.max(8, window.innerWidth - width - 8))
     companionState.y = clamp(companionState.y, 42, Math.max(42, window.innerHeight - height - 28))
     petButton.style.left = `${Math.round(companionState.x)}px`
@@ -1042,6 +1059,8 @@ export function apply(ctx: Context): void {
     else body.setAttribute('data-catnap-settings-open', originalSettingsOpen)
     if (originalComposerOverlayOpen === null) body.removeAttribute('data-catnap-composer-overlay-open')
     else body.setAttribute('data-catnap-composer-overlay-open', originalComposerOverlayOpen)
+    if (originalExternalOverlayOpen === null) body.removeAttribute('data-catnap-external-overlay-open')
+    else body.setAttribute('data-catnap-external-overlay-open', originalExternalOverlayOpen)
     if (originalTexture === '') body.style.removeProperty('--catnap-texture')
     else body.style.setProperty('--catnap-texture', originalTexture, originalTexturePriority)
     if (originalHero === '') body.style.removeProperty('--catnap-hero-art')
