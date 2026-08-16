@@ -54,7 +54,7 @@
     "@linxin666/dsh-client-ui-task-board": "0.1.12",
     "@linxin666/dsh-client-ui-web-ui-settings": "0.1.12",
     "@linxin666/dsh-live-stats": "0.1.12",
-    "@types/node": "^22.20.0",
+    "@types/node": "^26.2.0",
     "jsdom": "29.1.1",
     "lightningcss": "^1.32.0",
     "tsdown": "^0.22.2",
