@@ -4,6 +4,10 @@
 
 面向 DeepSeek Harness Web UI 的猫咪工作台插件。它保留成熟 DSH Web UI 的任务、仓库、文件、统计与设置能力，再用一套原创猫咪视觉层统一界面；一个安装包内置三套完整外观和一只可互动的桌面猫咪。
 
+> 社区项目，基于 DeepSeek Harness 构建，**不是 DeepSeek 官方产品，也不代表其背书**。
+
+当前发布线：**Catnap Studio v0.3.1**。Windows 用户若希望免除 Node 与 DSH CLI 配置，可使用配套的 [Catnap Desktop](https://github.com/luoyan96/dsh-catnap-desktop)（发布后可用）。
+
 | 暖纸猫窝 | 月夜守护 | 猫咪工坊 |
 | --- | --- | --- |
 | ![暖纸猫窝](preview/warm.png) | ![月夜守护](preview/moonlit.png) | ![猫咪工坊](preview/atelier.png) |
@@ -42,6 +46,27 @@ npm.cmd install -g @deepseek-ai/dsh
 dsh --version
 ```
 
+## 三步安装
+
+1. 从 [Releases](https://github.com/luoyan96/dsh-catnap-studio/releases) 下载与版本匹配的 `.tgz`。
+2. 在 PowerShell 中安装插件：
+
+```powershell
+dsh plugin --profile web add "C:\path\to\dsh-client-ui-skin-catnap-0.3.1.tgz"
+```
+
+3. 启动或重启 DSH Web UI：
+
+```powershell
+dsh web
+```
+
+安装或升级后需要重启 `dsh web`。卸载：
+
+```powershell
+dsh plugin --profile web remove dsh-client-ui-skin-catnap
+```
+
 ## 从源码安装
 
 ```sh
@@ -60,12 +85,6 @@ dsh plugin --profile web add "link:$($PWD.Path)"
 dsh web
 ```
 
-安装或升级后需要重启 `dsh web`。卸载：
-
-```sh
-dsh plugin --profile web remove dsh-client-ui-skin-catnap
-```
-
 如果之前装过整合包，建议先移除它，避免同一批功能插件被重复注册：
 
 ```powershell
@@ -74,7 +93,7 @@ dsh plugin --profile web remove @linxin666/dsh-web-ui-all
 
 ## 使用 Release 安装包
 
-推送形如 `v0.3.0` 的 Git 标签后，仓库的 Release 工作流会自动运行验证并上传 `dsh-client-ui-skin-catnap-0.3.0.tgz`。下载后可将本地包路径传给 `dsh plugin --profile web add`。
+推送与 `package.json` 匹配的标签（例如 `v0.3.1`）后，Release 工作流会运行验证并上传 `dsh-client-ui-skin-catnap-0.3.1.tgz` 与 `CHECKSUMS.txt`。请在安装前核对 SHA-256。
 
 ## 开发
 
@@ -106,7 +125,7 @@ src/                 DSH 插件源码
 tests/               生命周期与主题切换测试
 ```
 
-主题和组件约束见 [DESIGN.md](DESIGN.md)，视觉验收记录见 [design-qa.md](design-qa.md)，参与开发见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+真实 DSH 页面验收截图位于 [`docs/qa/`](docs/qa/)；主题和组件约束见 [DESIGN.md](DESIGN.md)，视觉验收记录见 [design-qa.md](design-qa.md)，参与开发见 [CONTRIBUTING.md](CONTRIBUTING.md)，安全问题请遵循 [SECURITY.md](SECURITY.md)。
 
 ## 许可证
 

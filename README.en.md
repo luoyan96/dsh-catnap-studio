@@ -4,6 +4,10 @@
 
 A cat-themed workspace suite for the DeepSeek Harness Web UI. It keeps the useful task, repository, file, statistics, and settings modules from the mature DSH Web UI ecosystem, then unifies them with original cat visuals. One install contains three appearances and an interactive desktop companion.
 
+> A community project built on DeepSeek Harness. **It is not an official DeepSeek product and is not endorsed by DeepSeek.**
+
+Current release line: **Catnap Studio v0.3.1**. Windows users who prefer a bundled experience can use the companion [Catnap Desktop](https://github.com/luoyan96/dsh-catnap-desktop) once it is published.
+
 | Warm Paper Den | Moonlit Guardian | Cat Atelier |
 | --- | --- | --- |
 | ![Warm Paper Den](preview/warm.png) | ![Moonlit Guardian](preview/moonlit.png) | ![Cat Atelier](preview/atelier.png) |
@@ -42,6 +46,27 @@ npm.cmd install -g @deepseek-ai/dsh
 dsh --version
 ```
 
+## Install in three steps
+
+1. Download the matching `.tgz` from [Releases](https://github.com/luoyan96/dsh-catnap-studio/releases).
+2. Install the plugin in PowerShell:
+
+```powershell
+dsh plugin --profile web add "C:\path\to\dsh-client-ui-skin-catnap-0.3.1.tgz"
+```
+
+3. Start or restart the DSH Web UI:
+
+```powershell
+dsh web
+```
+
+Restart `dsh web` after installation or upgrade. Remove the plugin with:
+
+```powershell
+dsh plugin --profile web remove dsh-client-ui-skin-catnap
+```
+
 ## Install from source
 
 ```sh
@@ -60,12 +85,6 @@ dsh plugin --profile web add "link:$($PWD.Path)"
 dsh web
 ```
 
-Restart `dsh web` after installing or upgrading. Remove the plugin with:
-
-```sh
-dsh plugin --profile web remove dsh-client-ui-skin-catnap
-```
-
 If the all-in-one reference bundle is already installed, remove it first to avoid registering the same functional modules twice:
 
 ```powershell
@@ -74,7 +93,7 @@ dsh plugin --profile web remove @linxin666/dsh-web-ui-all
 
 ## Release packages
 
-Pushing a tag such as `v0.3.0` runs the Release workflow, verifies the project, and uploads `dsh-client-ui-skin-catnap-0.3.0.tgz`. After downloading it, pass its local path to `dsh plugin --profile web add`.
+Pushing a tag matching `package.json` (for example `v0.3.1`) runs the Release workflow and uploads `dsh-client-ui-skin-catnap-0.3.1.tgz` with `CHECKSUMS.txt`. Verify the SHA-256 before installing.
 
 ## Development
 
@@ -88,7 +107,7 @@ pnpm run pack:check
 
 Start the local preview with `python -m http.server 4173`, then open `http://127.0.0.1:4173/preview/index.html?theme=warm`. The `theme` query accepts `warm`, `moonlit`, or `atelier`; append `&state=active` for the Cat Atelier active-session example.
 
-See [DESIGN.md](DESIGN.md) for theme constraints, [design-qa.md](design-qa.md) for visual acceptance evidence, and [CONTRIBUTING.md](CONTRIBUTING.md) before contributing.
+Current real-DSH acceptance captures are in [`docs/qa/`](docs/qa/). See [DESIGN.md](DESIGN.md) for theme constraints, [design-qa.md](design-qa.md) for visual acceptance evidence, [CONTRIBUTING.md](CONTRIBUTING.md) before contributing, and [SECURITY.md](SECURITY.md) for security reporting.
 
 ## License
 

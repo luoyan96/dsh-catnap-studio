@@ -2,6 +2,11 @@
 
 All notable changes to Catnap Studio are documented here.
 
+## 0.3.1 — 2026-08-16
+
+- Publishes the validated companion placement and external-overlay avoidance fixes that were not included by the existing `v0.3.0` tag.
+- Adds release-ready installation, checksum, screenshot, security, and non-official-product guidance.
+
 ## 0.3.0 — 2026-08-14
 
 - Moved the three-theme switcher into Settings → General → Appearance with larger visual cards.
