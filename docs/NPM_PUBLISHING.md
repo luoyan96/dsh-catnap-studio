@@ -14,9 +14,9 @@ DSH 会通过 pnpm 下载 npm 包；猫咪图片、动作帧、纹理和本地�
 - npm 包名：`dsh-catnap-plugins`
 - 首发版本：`0.3.2`
 - GitHub 源码仓库：`luoyan96/dsh-catnap-studio`（不因 npm 包改名而改变）
-- npm registry 查询结果：截至 2026-08-17，`dsh-catnap-plugins` 返回 404，尚未存在公开包。
+- npm registry：`dsh-catnap-plugins@0.3.2` 已公开发布，`latest` 指向 `0.3.2`。
 
-在首次 `npm publish` 成功前，`@latest` 安装命令会继续返回 404；这是预期状态。不要推送 `v*` tag 作为试验：`.github/workflows/release.yml` 会同时执行 npm 发布和 GitHub Release。
+不要推送 `v*` tag 作为试验：`.github/workflows/release.yml` 会同时执行 npm 发布和 GitHub Release。
 
 ## 首次公开发布（维护者手动执行）
 

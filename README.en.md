@@ -26,12 +26,12 @@ Every cat illustration and paper texture is embedded in the browser bundle. The 
 - **Cat Den Center** — manage the companion and inspect enabled capabilities from one glass panel.
 - **Cat companion** — drag, pet, feed, rename, hide, and recall it; affinity and position persist locally.
 - **Task board** — organize tasks by status, open details, and schedule work.
-- **Git graph** — switch branches and inspect commits and repository state.
-- **Files and preview** — browse, preview, and manage workspace files in the right panel.
+- **Git graph and files (fallback)** — Catnap's embedded legacy workbench remains available when Better Sidebar is not installed.
+- **Better Sidebar workbench (optional)** — file tree, editor, real terminal, Git diff, split right/bottom panels, and per-session layouts. When installed, Catnap automatically avoids activating the legacy Aion file panel and Git graph clients, preventing duplicate sidebars.
 - **Live statistics** — inspect TPS, context, cache, and token usage.
 - **Plugin settings** — manage workspace modules from DSH settings.
 
-The final five capabilities are composed from the compiled `0.1.12` code of public `@linxin666/dsh-web-ui` packages. Catnap Studio does not copy the reference project's character or background artwork. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for notices and the dual-license clarification.
+Task, fallback-workbench, statistics, and settings capabilities are composed from the compiled `0.1.12` code of public `@linxin666/dsh-web-ui` packages. Better Sidebar is an independent MIT-licensed plugin: Catnap only detects it through DSH and adapts its shared design tokens; it does not include Better Sidebar's terminal, filesystem, WebSocket, or node-pty code. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for notices.
 
 ## Requirements
 
@@ -46,15 +46,22 @@ npm.cmd install -g @deepseek-ai/dsh
 dsh --version
 ```
 
-## One-line npm install (after the first publication)
+## One-line npm install
 
 ```powershell
 dsh plugin --profile web add dsh-catnap-plugins@latest
 dsh web
 ```
 
-Until the first npm publication is complete, install the matching GitHub
-Release tarball instead.
+Restart `dsh web` after installation or upgrade.
+
+### Optional: Better Sidebar workbench
+
+```powershell
+dsh plugin --profile web add dsh-better-sidebar@latest
+```
+
+Hard-refresh the browser after installing it. Catnap automatically avoids duplicate sidebars and themes Better Sidebar through the shared DSH tokens.
 
 ## Install from a GitHub Release
 

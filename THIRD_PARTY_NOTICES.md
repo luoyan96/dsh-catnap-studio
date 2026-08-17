@@ -26,3 +26,14 @@ its notices are preserved in `THIRD_PARTY_LICENSES/embedded-MIT.txt`.
 
 The Catnap themes, cat companion implementation, generated cat illustrations,
 and paper textures are maintained in this repository under BSD-3-Clause.
+
+## Better Sidebar compatibility
+
+Catnap Studio is compatible with the independently distributed
+[`dsh-better-sidebar`](https://github.com/omdsh-dev/DSH-better-sidebar)
+(`dsh-better-sidebar@0.12.3` at the time this compatibility layer was added),
+which is MIT licensed, copyright (c) 2026 dsh-external. This repository does
+not copy, bundle, modify, or redistribute Better Sidebar source code. The
+compatibility layer only detects the optional DSH module, avoids duplicate
+legacy clients, and supplies shared DSH design tokens; its terminal,
+filesystem, WebSocket, and node-pty implementations remain in Better Sidebar.

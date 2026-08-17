@@ -4,9 +4,7 @@
  */
 import type { Context } from '@deepseek-ai/cordis'
 import '@linxin666/dsh-client-ui-web-ui-settings/client'
-import '@linxin666/dsh-client-ui-aionui-panel/client'
 import '@linxin666/dsh-client-ui-task-board/client'
-import '@linxin666/dsh-client-ui-git-graph/client'
 import '@linxin666/dsh-live-stats/client'
 import css from './catnap.module.css'
 import { CompanionAudio } from './companion/audio.ts'
@@ -43,6 +41,11 @@ const FEATURE_CLIENT_IDS = [
   '@linxin666/dsh-client-ui-git-graph',
   '@linxin666/dsh-live-stats',
 ] as const
+const BETTER_SIDEBAR_MODULE_ID = 'dsh-better-sidebar'
+const LEGACY_WORKBENCH_IDS = new Set<string>([
+  '@linxin666/dsh-client-ui-aionui-panel',
+  '@linxin666/dsh-client-ui-git-graph',
+])
 const THEME_IDS: readonly ThemeId[] = ['warm', 'moonlit', 'atelier']
 const FEATURES: readonly FeatureDefinition[] = [
   { name: '任务看板', description: '按状态组织任务、打开详情并支持定时执行。' },
@@ -127,17 +130,45 @@ export const inject = [
   'workspaces',
 ]
 
-function activateFeatureClients(ctx: Context): void {
+async function hasBetterSidebar(ctx: Context, modules: ClientModuleSystem): Promise<boolean> {
+  // Better Sidebar exposes its service from its client half. Let sibling
+  // factories finish their initial apply turn before checking it; DSH does not
+  // guarantee an importable client-module row for every installed plugin.
+  await new Promise<void>(resolve => window.setTimeout(resolve, 0))
+  const getService = (ctx as Context & { get?: (name: string, strict?: boolean) => unknown }).get
+  if (getService?.('betterSidebar', false) !== undefined) return true
+  try {
+    await modules.import(BETTER_SIDEBAR_MODULE_ID)
+    return true
+  } catch {
+    return false
+  }
+}
+
+function activateFeatureClients(ctx: Context): () => void {
   const modules = globalThis.__DSH_MODULES__
-  if (modules === undefined) return
-  void Promise.all(FEATURE_CLIENT_IDS.map(id => modules.import(id))).then((features) => {
+  if (modules === undefined) return () => {}
+  let disposed = false
+  void hasBetterSidebar(ctx, modules).then(async (betterSidebarEnabled) => {
+    if (disposed) return
+    document.body.toggleAttribute('data-catnap-better-sidebar', betterSidebarEnabled)
+    const ids = betterSidebarEnabled
+      ? FEATURE_CLIENT_IDS.filter(id => !LEGACY_WORKBENCH_IDS.has(id))
+      : FEATURE_CLIENT_IDS
+    const features = await Promise.all(ids.map(id => modules.import(id)))
+    if (disposed) return
     for (const feature of features) {
+      if (disposed) return
       const candidate = feature as FeatureClientModule
       candidate.apply?.(ctx)
     }
   }).catch((error: unknown) => {
+    if (disposed) return
     console.error('Catnap Studio could not activate its workbench modules.', error)
   })
+  return () => {
+    disposed = true
+  }
 }
 
 const cls = (name: keyof typeof css): string => css[name] ?? ''
@@ -241,6 +272,7 @@ function positionDecor(theme: ThemeId, mascot: HTMLImageElement, companion: HTML
 /** Apply Catnap Studio and register a disposer for every owned DOM write. */
 export function apply(ctx: Context): void {
   const body = document.body
+  const originalBetterSidebar = body.getAttribute('data-catnap-better-sidebar')
   const ownedPaneMarkers = new Map<HTMLElement, string | null>()
   const ensureHostPaneMarkers = (): void => {
     const panes = [
@@ -257,7 +289,7 @@ export function apply(ctx: Context): void {
     }
   }
   ensureHostPaneMarkers()
-  activateFeatureClients(ctx)
+  const stopFeatureActivation = activateFeatureClients(ctx)
   const desktopMode = new URLSearchParams(window.location.search).get('catnap-desktop') === '1'
   const displayTitle = (definition: ThemeDefinition): string => desktopMode
     ? `Catnap Desktop · ${definition.label}`
@@ -1021,6 +1053,7 @@ export function apply(ctx: Context): void {
   resizeObserver?.observe(body)
 
   ctx.effect(() => () => {
+    stopFeatureActivation()
     document.removeEventListener('pointerdown', onPointerDown)
     document.removeEventListener('keydown', onKeyDown)
     document.removeEventListener('input', onTyping)
@@ -1061,6 +1094,8 @@ export function apply(ctx: Context): void {
     else body.setAttribute('data-catnap-composer-overlay-open', originalComposerOverlayOpen)
     if (originalExternalOverlayOpen === null) body.removeAttribute('data-catnap-external-overlay-open')
     else body.setAttribute('data-catnap-external-overlay-open', originalExternalOverlayOpen)
+    if (originalBetterSidebar === null) body.removeAttribute('data-catnap-better-sidebar')
+    else body.setAttribute('data-catnap-better-sidebar', originalBetterSidebar)
     if (originalTexture === '') body.style.removeProperty('--catnap-texture')
     else body.style.setProperty('--catnap-texture', originalTexture, originalTexturePriority)
     if (originalHero === '') body.style.removeProperty('--catnap-hero-art')

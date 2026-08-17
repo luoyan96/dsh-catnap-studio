@@ -10,6 +10,8 @@ const { apply } = await import('../src/client/index.ts')
 
 type Disposer = () => void
 
+const flushAsyncWork = (): Promise<void> => new Promise(resolve => window.setTimeout(resolve, 0))
+
 function applySkin(): Disposer {
   let disposer: Disposer | undefined
   const ctx = {
@@ -36,6 +38,7 @@ describe('Catnap Studio skin', () => {
     document.head.innerHTML = ''
     document.body.removeAttribute('data-dsh-catnap')
     document.body.removeAttribute('data-catnap-theme')
+    document.body.removeAttribute('data-catnap-better-sidebar')
     document.body.style.removeProperty('--catnap-texture')
     document.body.style.removeProperty('--catnap-hero-art')
     document.body.innerHTML = [
@@ -52,6 +55,7 @@ describe('Catnap Studio skin', () => {
     window.localStorage.clear()
     document.body.removeAttribute('data-dsh-catnap')
     document.body.removeAttribute('data-catnap-theme')
+    document.body.removeAttribute('data-catnap-better-sidebar')
     document.body.style.removeProperty('--catnap-texture')
     document.body.style.removeProperty('--catnap-hero-art')
   })
@@ -339,5 +343,77 @@ describe('Catnap Studio skin', () => {
     expect(sidebar?.hasAttribute('data-pane')).toBe(false)
     expect(conversation?.hasAttribute('data-pane')).toBe(false)
     expect(details?.dataset.pane).toBe('host-details')
+  })
+
+  it('uses Better Sidebar when available instead of activating legacy Aion and Git clients', async () => {
+    const applied: string[] = []
+    const modules = {
+      import: vi.fn(async (id: string) => ({ apply: () => applied.push(id) })),
+    }
+    vi.stubGlobal('__DSH_MODULES__', modules)
+
+    const dispose = applySkin()
+    await flushAsyncWork()
+
+    expect(document.body.hasAttribute('data-catnap-better-sidebar')).toBe(true)
+    expect(applied).toContain('@linxin666/dsh-client-ui-task-board')
+    expect(applied).not.toContain('@linxin666/dsh-client-ui-aionui-panel')
+    expect(applied).not.toContain('@linxin666/dsh-client-ui-git-graph')
+
+    dispose()
+    expect(document.body.hasAttribute('data-catnap-better-sidebar')).toBe(false)
+  })
+
+  it('falls back to the legacy workbench clients when Better Sidebar is absent', async () => {
+    const applied: string[] = []
+    const modules = {
+      import: vi.fn(async (id: string) => {
+        if (id === 'dsh-better-sidebar') throw new Error('not installed')
+        return { apply: () => applied.push(id) }
+      }),
+    }
+    vi.stubGlobal('__DSH_MODULES__', modules)
+
+    const dispose = applySkin()
+    await flushAsyncWork()
+
+    expect(document.body.hasAttribute('data-catnap-better-sidebar')).toBe(false)
+    expect(applied).toContain('@linxin666/dsh-client-ui-aionui-panel')
+    expect(applied).toContain('@linxin666/dsh-client-ui-git-graph')
+
+    dispose()
+  })
+
+  it('restores the Better Sidebar body marker during disposal', async () => {
+    const modules = { import: vi.fn(async () => ({ apply: () => {} })) }
+    vi.stubGlobal('__DSH_MODULES__', modules)
+    document.body.setAttribute('data-catnap-better-sidebar', 'previous')
+
+    const dispose = applySkin()
+    await flushAsyncWork()
+    expect(document.body.getAttribute('data-catnap-better-sidebar')).toBe('previous')
+
+    dispose()
+    expect(document.body.getAttribute('data-catnap-better-sidebar')).toBe('previous')
+  })
+
+  it('does not activate modules or write the Better Sidebar marker after disposal wins the async probe', async () => {
+    let resolveProbe: ((value: unknown) => void) | undefined
+    const applied = vi.fn()
+    const modules = {
+      import: vi.fn((id: string) => id === 'dsh-better-sidebar'
+        ? new Promise(resolve => { resolveProbe = resolve })
+        : Promise.resolve({ apply: applied })),
+    }
+    vi.stubGlobal('__DSH_MODULES__', modules)
+
+    const dispose = applySkin()
+    await flushAsyncWork()
+    dispose()
+    resolveProbe?.({})
+    await flushAsyncWork()
+
+    expect(document.body.hasAttribute('data-catnap-better-sidebar')).toBe(false)
+    expect(applied).not.toHaveBeenCalled()
   })
 })

@@ -524,6 +524,12 @@ body[data-dsh-catnap] .settingsThemeGrid {
   gap: 10px;
 }
 
+/* The Better Sidebar can reserve the right edge while DSH Settings is open.
+ * Let the third theme card wrap instead of leaving it beneath that workbench. */
+body[data-dsh-catnap][data-catnap-better-sidebar] .settingsThemeGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 body[data-dsh-catnap] .settingsThemeCard {
   position: relative;
   display: grid;
@@ -1090,6 +1096,14 @@ body[data-dsh-catnap] .companion {
   height: auto;
   pointer-events: none;
   transform-origin: 76% 88%;
+}
+
+/* Better Sidebar owns the workbench's portalled panes. Keep the companion
+ * interactive in the conversation area without placing it above its editor,
+ * terminal, menus, or settings surfaces. */
+body[data-dsh-catnap][data-catnap-better-sidebar] .companion,
+body[data-dsh-catnap][data-catnap-better-sidebar] .mascot {
+  z-index: 20;
 }
 
 body[data-dsh-catnap] .mascot[hidden],

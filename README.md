@@ -20,18 +20,18 @@
 
 所有猫咪插画与纸张纹理均打包进浏览器 bundle，插件运行时不会请求外部图片。主题本身不触及模型请求。
 
-## 完整工作台能力
+## 工作台能力
 
 - **设置内主题切换**：在「设置 → 通用设置 → 外观」里使用三张大卡片切换主题；设置打开时桌面猫咪会自动收起，关闭后恢复。
 - **猫窝中心**：管理猫咪伙伴并查看已启用能力。
 - **猫咪伙伴**：支持拖动位置、摸猫、喂小鱼干、改名、隐藏/召回；好感度和位置保存在浏览器本地。
 - **任务看板**：按状态组织任务、打开详情并支持定时执行。
-- **Git 图谱**：切换分支、查看提交历史与仓库状态。
-- **文件与预览**：在右侧面板浏览、预览和管理工作区文件。
+- **Git 图谱与文件面板（回退）**：未安装 Better Sidebar 时，保留 Catnap 内嵌的旧工作台模块。
+- **Better Sidebar 工作台（可选）**：安装后提供文件树、编辑器、真实终端、Git diff、可拆分右栏/底栏与按会话布局；Catnap 自动停用旧 Aion 文件面板和旧 Git 图谱客户端，避免双侧栏。
 - **实时统计**：查看 TPS、上下文、缓存和令牌用量。
 - **插件设置**：在 DSH 设置中心统一管理工作台功能。
 
-后五项能力由 `@linxin666/dsh-web-ui` 系列公开包的 `0.1.12` 编译代码组合而成；Catnap Studio 不复制原项目的人物或背景素材。第三方声明及双重许可证说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+任务、回退工作台、实时统计和设置能力由 `@linxin666/dsh-web-ui` 系列公开包的 `0.1.12` 编译代码组合而成；Catnap Studio 不复制原项目的人物或背景素材。Better Sidebar 是独立的 MIT 许可插件，Catnap 仅通过 DSH 模块系统检测和适配其 token，不包含其终端、文件系统、WebSocket 或 node-pty 代码。第三方声明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
 ## 环境要求
 
@@ -46,16 +46,24 @@ npm.cmd install -g @deepseek-ai/dsh
 dsh --version
 ```
 
-## 一行安装（npm 发布后）
+## 一行安装
 
-Catnap Studio 发布到 npm 后，DSH 会自动下载插件和内置的猫咪素材：
+DSH 会自动下载插件和内置的猫咪素材：
 
 ```powershell
 dsh plugin --profile web add dsh-catnap-plugins@latest
 dsh web
 ```
 
-首次 npm 发布完成前，请使用下方 GitHub Release 安装包。安装或升级后都需要重启 `dsh web`。
+安装或升级后都需要重启 `dsh web`。
+
+### 可选：Better Sidebar 工作台
+
+```powershell
+dsh plugin --profile web add dsh-better-sidebar@latest
+```
+
+安装后硬刷新浏览器；Catnap 会自动避免双侧栏，并将三套主题 token 应用于 Better Sidebar。它是独立插件，终端等宿主能力由 Better Sidebar 自行提供。
 
 ## GitHub Release 安装（当前可用）
 

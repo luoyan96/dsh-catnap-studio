@@ -32,7 +32,7 @@ Catnap Studio 是安装到 **DeepSeek Harness（DSH）Web profile** 的前端插
 | 项目 | 状态 |
 | --- | --- |
 | npm / DSH 包名 | `dsh-catnap-plugins` |
-| 包版本 | `0.3.2`（待首次公开 npm 发布） |
+| 包版本 | `0.3.2`（已公开发布，`latest` 指向此版本） |
 | 当前提交 | 本地重命名发布准备中 |
 | AI-02 前端修复 | `557587b`，已包含在 `v0.3.1` 和远端 `main` |
 | 主题 | 暖纸猫窝、月夜守护、猫咪工坊 |
@@ -65,6 +65,16 @@ DSH Web profile
 - `@linxin666/dsh-client-ui-task-board`
 - `@linxin666/dsh-client-ui-git-graph`
 - `@linxin666/dsh-live-stats`
+
+`dsh-better-sidebar` 是可选的独立工作台底座，不是 Catnap 依赖。由于它的
+`betterSidebar` 服务只存在于客户端，Catnap Host 保留旧 Aion/Git Host 模块来
+支持未安装时的回退；客户端会先异步探测可选模块。探测成功时只激活设置、任务
+看板和实时统计，跳过旧 Aion 文件面板和旧 Git 图谱客户端，且写入
+`data-catnap-better-sidebar` 供主题样式让位。探测失败时完整激活旧模块。任何
+探测结果在 Catnap 已 dispose 后都不得再写 DOM 或调用模块 `apply`。
+
+Catnap 不打包或复制 Better Sidebar 的终端、文件系统、WebSocket、node-pty 或
+MIT 源码；三主题通过已有 `--dsw-alias-*` 设计 token 着色。
 
 这些模块在构建时打包为单一插件；`tsdown.config.ts` 对 `@linxin666/*`、`schemastery` 和 `zod` 使用 bundle，对 `@deepseek-ai/*` 保持外部依赖。这是 DSH profile 能用一条 `link:` 或一个 `.tgz` 安装的关键，不应随意改变。
 
@@ -167,6 +177,16 @@ dsh web
 ```
 
 升级或重新构建后需重启 `dsh web`。如果出现重复的工作台模块，先移除旧的 `@linxin666/dsh-web-ui-all` 整合包。真实验收至少覆盖：三主题切换及刷新后的持久化、设置、菜单/模型列表、输入、右栏、弹层、抚摸、声音关闭、减少动画、800px 左右窄屏和控制台错误。
+
+可选工作台底座安装：
+
+```powershell
+dsh plugin --profile web add dsh-better-sidebar@latest
+```
+
+安装后硬刷新浏览器。验证 Better Sidebar 的右栏/底栏、文件、终端、Git tab 时，
+确认 Catnap 未出现旧 Aion/Git 双侧栏，且工作区猫不会压住其 editor、terminal、
+菜单、输入框或设置弹层。
 
 ### 与 Desktop 的边界
 
