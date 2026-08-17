@@ -6,7 +6,7 @@ A cat-themed workspace suite for the DeepSeek Harness Web UI. It keeps the usefu
 
 > A community project built on DeepSeek Harness. **It is not an official DeepSeek product and is not endorsed by DeepSeek.**
 
-Current release line: **Catnap Studio v0.3.1**. Windows users who prefer a bundled experience can use the companion [Catnap Desktop](https://github.com/luoyan96/dsh-catnap-desktop) once it is published.
+Current release line: **Catnap Studio v0.3.2**. Windows users who prefer a bundled experience can use the companion [Catnap Desktop](https://github.com/luoyan96/dsh-catnap-desktop) once it is published.
 
 | Warm Paper Den | Moonlit Guardian | Cat Atelier |
 | --- | --- | --- |
@@ -46,13 +46,23 @@ npm.cmd install -g @deepseek-ai/dsh
 dsh --version
 ```
 
-## Install in three steps
+## One-line npm install (after the first publication)
+
+```powershell
+dsh plugin --profile web add dsh-catnap-plugins@latest
+dsh web
+```
+
+Until the first npm publication is complete, install the matching GitHub
+Release tarball instead.
+
+## Install from a GitHub Release
 
 1. Download the matching `.tgz` from [Releases](https://github.com/luoyan96/dsh-catnap-studio/releases).
 2. Install the plugin in PowerShell:
 
 ```powershell
-dsh plugin --profile web add "C:\path\to\dsh-client-ui-skin-catnap-0.3.1.tgz"
+dsh plugin --profile web add "C:\path\to\dsh-catnap-plugins-0.3.2.tgz"
 ```
 
 3. Start or restart the DSH Web UI:
@@ -64,7 +74,7 @@ dsh web
 Restart `dsh web` after installation or upgrade. Remove the plugin with:
 
 ```powershell
-dsh plugin --profile web remove dsh-client-ui-skin-catnap
+dsh plugin --profile web remove dsh-catnap-plugins
 ```
 
 ## Install from source
@@ -93,7 +103,7 @@ dsh plugin --profile web remove @linxin666/dsh-web-ui-all
 
 ## Release packages
 
-Pushing a tag matching `package.json` (for example `v0.3.1`) runs the Release workflow and uploads `dsh-client-ui-skin-catnap-0.3.1.tgz` with `CHECKSUMS.txt`. Verify the SHA-256 before installing.
+Pushing a tag matching `package.json` (for example `v0.3.2`) runs the Release workflow and uploads `dsh-catnap-plugins-0.3.2.tgz` with `CHECKSUMS.txt`. Verify the SHA-256 before installing.
 
 ## Development
 

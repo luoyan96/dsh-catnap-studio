@@ -2,6 +2,15 @@
 
 All notable changes to Catnap Studio are documented here.
 
+## 0.3.2 — 2026-08-17
+
+- Renamed the installable npm package and DSH module identifier from
+  `dsh-client-ui-skin-catnap` to `dsh-catnap-plugins`.
+- Prepared the first public npm release and OIDC-backed subsequent-release
+  workflow for the new package identity.
+- Kept the Catnap Studio product name, `ui-skin-catnap` wiring id, browser
+  preference keys, and GitHub repository address for compatibility.
+
 ## 0.3.1 — 2026-08-16
 
 - Publishes the validated companion placement and external-overlay avoidance fixes that were not included by the existing `v0.3.0` tag.

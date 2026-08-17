@@ -72,7 +72,7 @@
           // nested DSH loader entries. The standalone preview only exercises
           // Catnap's theme and companion UI, so register those nested entries
           // as inert modules instead of evaluating their DSH runtime imports.
-          if (entry.id !== 'dsh-client-ui-skin-catnap') {
+          if (entry.id !== 'dsh-catnap-plugins') {
             previewModules.set(entry.id, { apply() {} })
             return
           }

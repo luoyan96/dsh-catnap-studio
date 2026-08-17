@@ -18,7 +18,7 @@
   ],
   "accent": "#e9782d",
   "bodyAttr": "data-dsh-catnap",
-  "package": "dsh-client-ui-skin-catnap",
+  "package": "dsh-catnap-plugins",
   "repository": "https://github.com/luoyan96/dsh-catnap-studio",
   "wiring": {
     "id": "ui-skin-catnap",

@@ -3,7 +3,7 @@ import { basename, dirname, resolve } from 'node:path'
 import type { UserConfig } from 'tsdown'
 import { transform } from 'lightningcss'
 
-const PLUGIN_ID = 'dsh-client-ui-skin-catnap'
+const PLUGIN_ID = 'dsh-catnap-plugins'
 const CSS_VIRTUAL_PREFIX = '\0catnap-css:'
 const CSS_VIRTUAL_SUFFIX = '.mjs'
 

@@ -1,7 +1,7 @@
 # Catnap Studio 前端知识库与重设计基线
 
-> 更新：2026-08-16  
-> 仓库：`D:\deepseek-agent\local-plugins\dsh-client-ui-skin-catnap`  
+> 更新：2026-08-17
+> 仓库：`D:\deepseek-agent\dsh-catnap-plugins`
 > GitHub：[luoyan96/dsh-catnap-studio](https://github.com/luoyan96/dsh-catnap-studio)  
 > 当前基线：`6692629` / `v0.3.1`
 
@@ -31,8 +31,9 @@ Catnap Studio 是安装到 **DeepSeek Harness（DSH）Web profile** 的前端插
 
 | 项目 | 状态 |
 | --- | --- |
-| 包版本 | `0.3.1` |
-| 当前提交 | `6692629`（`release: prepare Catnap Studio 0.3.1`） |
+| npm / DSH 包名 | `dsh-catnap-plugins` |
+| 包版本 | `0.3.2`（待首次公开 npm 发布） |
+| 当前提交 | 本地重命名发布准备中 |
 | AI-02 前端修复 | `557587b`，已包含在 `v0.3.1` 和远端 `main` |
 | 主题 | 暖纸猫窝、月夜守护、猫咪工坊 |
 | 自动化测试 | 5 个测试文件，当前基线为 22 项测试 |
@@ -147,7 +148,7 @@ DSH Web profile
 ### 本地开发
 
 ```powershell
-cd D:\deepseek-agent\local-plugins\dsh-client-ui-skin-catnap
+cd D:\deepseek-agent\dsh-catnap-plugins
 pnpm install --frozen-lockfile
 node scripts\embed-cat.mjs
 node_modules\.bin\tsc.cmd --noEmit
@@ -225,7 +226,7 @@ git ls-remote origin refs/heads/main
 若 Git 因 Windows 文件所有权提示 `dubious ownership`，可对单条只读命令使用：
 
 ```powershell
-git -c safe.directory=D:/deepseek-agent/local-plugins/dsh-client-ui-skin-catnap status --short
+git -c safe.directory=D:/deepseek-agent/dsh-catnap-plugins status --short
 ```
 
 不要为了方便而不加审查地把目录加入全局安全例外。
@@ -237,7 +238,7 @@ git -c safe.directory=D:/deepseek-agent/local-plugins/dsh-client-ui-skin-catnap 
 首次 npm 发布前，必须先阅读并完成 [NPM_PUBLISHING.md](NPM_PUBLISHING.md) 的包名认领和 Trusted Publishing 设置。配置完成后，普通用户可使用：
 
 ```powershell
-dsh plugin --profile web add dsh-client-ui-skin-catnap@latest
+dsh plugin --profile web add dsh-catnap-plugins@latest
 dsh web
 ```
 

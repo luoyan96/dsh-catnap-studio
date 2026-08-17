@@ -6,7 +6,7 @@
 
 > 社区项目，基于 DeepSeek Harness 构建，**不是 DeepSeek 官方产品，也不代表其背书**。
 
-当前发布线：**Catnap Studio v0.3.1**。Windows 用户若希望免除 Node 与 DSH CLI 配置，可使用配套的 [Catnap Desktop](https://github.com/luoyan96/dsh-catnap-desktop)（发布后可用）。
+当前发布线：**Catnap Studio v0.3.2**。Windows 用户若希望免除 Node 与 DSH CLI 配置，可使用配套的 [Catnap Desktop](https://github.com/luoyan96/dsh-catnap-desktop)（发布后可用）。
 
 | 暖纸猫窝 | 月夜守护 | 猫咪工坊 |
 | --- | --- | --- |
@@ -51,7 +51,7 @@ dsh --version
 Catnap Studio 发布到 npm 后，DSH 会自动下载插件和内置的猫咪素材：
 
 ```powershell
-dsh plugin --profile web add dsh-client-ui-skin-catnap@latest
+dsh plugin --profile web add dsh-catnap-plugins@latest
 dsh web
 ```
 
@@ -63,7 +63,7 @@ dsh web
 2. 在 PowerShell 中安装插件：
 
 ```powershell
-dsh plugin --profile web add "C:\path\to\dsh-client-ui-skin-catnap-0.3.1.tgz"
+dsh plugin --profile web add "C:\path\to\dsh-catnap-plugins-0.3.2.tgz"
 ```
 
 3. 启动或重启 DSH Web UI：
@@ -75,7 +75,7 @@ dsh web
 卸载：
 
 ```powershell
-dsh plugin --profile web remove dsh-client-ui-skin-catnap
+dsh plugin --profile web remove dsh-catnap-plugins
 ```
 
 ## 从源码安装
@@ -108,7 +108,7 @@ dsh plugin --profile web remove @linxin666/dsh-web-ui-all
 
 ## 使用 Release 安装包
 
-推送与 `package.json` 匹配的标签（例如 `v0.3.1`）后，Release 工作流会运行验证并上传 `dsh-client-ui-skin-catnap-0.3.1.tgz` 与 `CHECKSUMS.txt`。请在安装前核对 SHA-256。
+推送与 `package.json` 匹配的标签（例如 `v0.3.2`）后，Release 工作流会运行验证并上传 `dsh-catnap-plugins-0.3.2.tgz` 与 `CHECKSUMS.txt`。请在安装前核对 SHA-256。
 
 ## 开发
 

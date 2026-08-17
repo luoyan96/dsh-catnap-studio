@@ -2,4 +2,4 @@
 # activate the vendored Apache-2.0 feature modules from one Cordis row.
 - insert:
     - id: ui-skin-catnap
-      name: 'dsh-client-ui-skin-catnap'
+      name: 'dsh-catnap-plugins'

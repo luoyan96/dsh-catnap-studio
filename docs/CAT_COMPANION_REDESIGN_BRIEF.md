@@ -15,7 +15,7 @@
 
 ## 项目与参考资料
 
-- 插件源码：`D:\deepseek-agent\local-plugins\dsh-client-ui-skin-catnap`
+- 插件源码：`D:\deepseek-agent\dsh-catnap-plugins`
 - 主要逻辑：`src/client/index.ts`
 - 主要样式：`src/client/catnap.module.css`
 - 当前内嵌素材：`src/client/generated/theme-assets.ts`

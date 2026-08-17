@@ -1,50 +1,69 @@
-# Catnap Studio npm 一行安装与发布
+# Catnap Studio npm 发布与一行安装
 
 目标安装体验：
 
 ```powershell
-dsh plugin --profile web add dsh-client-ui-skin-catnap@latest
+dsh plugin --profile web add dsh-catnap-plugins@latest
 dsh web
 ```
 
-DSH 会通过 pnpm 自动下载 npm 包；用户不再需要手动下载 `.tgz`。猫咪图片、动作帧、纹理和本地音频都仍包含在包内。
+DSH 会通过 pnpm 下载 npm 包；猫咪图片、动作帧、纹理和本地音频仍包含在包内，无需用户另行下载素材。
 
-## 当前状态
+## 当前发布状态
 
-仓库已具备 npm 发布配置，但 **npm 首次发布尚未执行**。因此在 npm 出现首个公开版本之前，README 中的 GitHub Release `.tgz` 安装方式仍是当前可用方式。
+- npm 包名：`dsh-catnap-plugins`
+- 首发版本：`0.3.2`
+- GitHub 源码仓库：`luoyan96/dsh-catnap-studio`（不因 npm 包改名而改变）
+- npm registry 查询结果：截至 2026-08-17，`dsh-catnap-plugins` 返回 404，尚未存在公开包。
 
-不要在未确认包名、版本和发布内容时推送 tag：`.github/workflows/release.yml` 会在 `v*` tag 上同时执行 npm 发布和 GitHub Release。
+在首次 `npm publish` 成功前，`@latest` 安装命令会继续返回 404；这是预期状态。不要推送 `v*` tag 作为试验：`.github/workflows/release.yml` 会同时执行 npm 发布和 GitHub Release。
 
-## 一次性的 npm 账户设置
+## 首次公开发布（维护者手动执行）
 
-包名为 `dsh-client-ui-skin-catnap`，仓库为 `luoyan96/dsh-catnap-studio`，发布工作流文件名为 `release.yml`。
+这一步会创建不可覆盖的公开 npm 版本，必须由拥有 npm 账户的维护者在确认发布内容后执行：
 
-1. 在 [npmjs.com](https://www.npmjs.com/) 登录或创建维护者账户，并启用双因素认证。
-2. 确认 `dsh-client-ui-skin-catnap` 可以由该账户公开发布。若名称已被他人占用，**先停止发布**，决定新包名后再同步修改 `package.json`、README、Desktop 同步配置和文档。
-3. 首次包必须先发布到 npm，随后 npm 才允许配置 Trusted Publisher。选择一个尚未发布的正式版本，例如 `0.3.2`；更新版本、变更记录和 Release Notes，完成测试后，在本机运行：
+```powershell
+cd D:\deepseek-agent\dsh-catnap-plugins
+$env:PNPM_CONFIG_STORE_DIR = "$env:LOCALAPPDATA\pnpm-store-dsh"
+npm login
+npm whoami
+pnpm install --frozen-lockfile
+pnpm run ci
+npm publish --access public
+npm view dsh-catnap-plugins version dist-tags --json
+```
 
-   ```powershell
-   npm login
-   npm publish --access public
-   ```
+发布前核对：
 
-   这一步会公开发布 npm 包，必须由拥有 npm 账户的维护者在确认后执行。
-4. 打开 npm 包的 **Settings → Trusted publishing**，选择 **GitHub Actions**，填写：
+- `package.json` 的 `name` 为 `dsh-catnap-plugins`，版本为 `0.3.2`；
+- `pnpm run ci` 通过；
+- `pnpm pack --dry-run` 中仅包含应发布的文件；
+- npm 账户已启用双因素认证，且没有把 `.npmrc`、token 或登录文件提交到 Git；
+- 若 `npm publish` 返回名称已占用、权限不足或版本已存在，立即停止，不要改用强制参数。
 
-   | 字段 | 值 |
-   | --- | --- |
-   | Organization or user | `luoyan96` |
-   | Repository | `dsh-catnap-studio` |
-   | Workflow filename | `release.yml` |
-   | Allowed action | `npm publish` |
+首次发布成功后，最终用户可验证：
 
-5. 在 npm 页面确认保存。无需把 npm token 写入 GitHub Secrets；工作流使用 GitHub OIDC 短期身份令牌。
+```powershell
+dsh plugin --profile web add dsh-catnap-plugins@0.3.2
+dsh web
+```
 
-官方说明：[npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/)。OIDC 发布要求 GitHub-hosted runner、`id-token: write` 权限、Node `>=22.14` 和 npm CLI `>=11.5.1`；工作流已满足这些条件并在发布前升级 npm CLI。
+## 配置 GitHub OIDC Trusted Publisher
+
+首次包已存在后，在 npm 包页面打开 **Settings → Trusted publishing**，选择 **GitHub Actions**，填写：
+
+| 字段 | 值 |
+| --- | --- |
+| Organization or user | `luoyan96` |
+| Repository | `dsh-catnap-studio` |
+| Workflow filename | `release.yml` |
+| Allowed action | `npm publish` |
+
+保存后，不需要把长期 `NPM_TOKEN` 写入 GitHub Secrets。现有工作流已声明 `id-token: write`，并把 npm CLI 升级到兼容 Trusted Publishing 的版本。官方要求和限制见 [npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/)。
 
 ## 后续正式发布
 
-1. 更新 `package.json`、`CHANGELOG.md`、`RELEASE_NOTES_v<version>.md`。
+1. 更新 `package.json`、`CHANGELOG.md` 和 `RELEASE_NOTES_v<version>.md`。
 2. 执行：
 
    ```powershell
@@ -53,27 +72,29 @@ DSH 会通过 pnpm 自动下载 npm 包；用户不再需要手动下载 `.tgz`�
    ```
 
 3. 提交并推送 `main`。
-4. 由维护者确认版本和发布内容后，推送匹配 tag：
+4. 获得发布授权后，创建与 `package.json` 完全匹配的 tag，例如：
 
    ```powershell
-   git tag v0.3.2
-   git push origin v0.3.2
+   git tag v0.3.3
+   git push origin v0.3.3
    ```
 
-5. GitHub Actions 会依次：校验 tag/版本、构建、打包、生成 SHA-256、`npm publish --access public`、创建 GitHub Release。
-6. 在新终端验证最终用户体验：
+5. GitHub Actions 将校验版本、构建、打包、生成 SHA-256、使用 OIDC 执行 `npm publish --access public`，并创建 GitHub Release。
 
-   ```powershell
-   dsh plugin --profile web add dsh-client-ui-skin-catnap@0.3.2
-   dsh web
-   ```
+## 旧包名迁移
 
-首次使用 `@latest` 前，也应确认 npm 的 `latest` dist-tag 指向刚发布的稳定版本。
+如果本机 profile 里曾安装旧本地包，先移除旧名，再安装新名：
+
+```powershell
+dsh plugin --profile web remove dsh-client-ui-skin-catnap
+dsh plugin --profile web add dsh-catnap-plugins@latest
+dsh web
+```
+
+`ui-skin-catnap` 的 Cordis wiring id、`data-dsh-catnap` 属性和浏览器本地偏好 key 保持不变，因此重装不会丢失主题、猫咪位置或声音设置。
 
 ## 安全与回滚
 
-- npm 版本不可覆盖；发布前务必核对 tarball 内容、许可证、第三方声明和版本号。
-- 不要把 `NPM_TOKEN`、`.npmrc` 凭据或 npm 登录文件提交到仓库。
-- OIDC Trusted Publishing 取代长期发布 token；不要为了方便退回到明文 Secret。
-- 已发布版本发现问题时，优先发布修复版本并更新 `latest`；不要删除用户可能已安装的版本。
-- GitHub Release `.tgz` 继续保留，用于离线安装、校验与 npm 故障时的备用渠道。
+- npm 已发布版本不可覆盖；修复问题时发布新版本，不删除用户可能安装的版本。
+- GitHub Release `.tgz` 保留为离线安装、校验和 npm 故障时的备用渠道。
+- 不要复用旧 tag，也不要在未授权时 push tag、发布 npm 包或创建 Release。
