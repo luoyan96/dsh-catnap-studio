@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
   release:
@@ -20,6 +21,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          registry-url: https://registry.npmjs.org
           cache: pnpm
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - name: Verify tag version
@@ -33,6 +35,10 @@ jobs:
           pnpm pack --pack-destination release
           cd release
           sha256sum *.tgz > CHECKSUMS.txt
+      - name: Publish package to npm
+        run: |
+          npm install --global npm@^11.5.1
+          npm publish --access public
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}

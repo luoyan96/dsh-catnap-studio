@@ -230,9 +230,18 @@ git -c safe.directory=D:/deepseek-agent/local-plugins/dsh-client-ui-skin-catnap 
 
 不要为了方便而不加审查地把目录加入全局安全例外。
 
-### 正式 GitHub Release（会产生外部状态）
+### 正式 npm + GitHub Release（会产生外部状态）
 
 只有版本号、Release Notes、截图、校验和和用户授权都确认后，才执行下列流程：
+
+首次 npm 发布前，必须先阅读并完成 [NPM_PUBLISHING.md](NPM_PUBLISHING.md) 的包名认领和 Trusted Publishing 设置。配置完成后，普通用户可使用：
+
+```powershell
+dsh plugin --profile web add dsh-client-ui-skin-catnap@latest
+dsh web
+```
+
+后续正式发布步骤：
 
 1. 更新 `package.json` 版本、`CHANGELOG.md` 与匹配的 `RELEASE_NOTES_v<version>.md`。
 2. 运行 `pnpm install --frozen-lockfile` 与 `pnpm run ci`。
@@ -244,7 +253,7 @@ git -c safe.directory=D:/deepseek-agent/local-plugins/dsh-client-ui-skin-catnap 
    git push origin v0.3.2
    ```
 
-5. `.github/workflows/release.yml` 会校验 tag/版本、重新构建、打包 `.tgz`、生成 `CHECKSUMS.txt` 并创建 GitHub Release。
+5. `.github/workflows/release.yml` 会校验 tag/版本、重新构建、打包 `.tgz`、生成 `CHECKSUMS.txt`、通过 npm OIDC 发布公开包并创建 GitHub Release。GitHub Release `.tgz` 保留为离线安装备用渠道。
 
 `v*` tag 会触发 Release 工作流，因此打 tag 不是普通同步动作。不要复用旧 tag；不要在未获授权时推送 tag 或创建 Release。
 
@@ -258,5 +267,4 @@ git -c safe.directory=D:/deepseek-agent/local-plugins/dsh-client-ui-skin-catnap 
 - [ ] 真实 DSH 截图已保存且与当前提交对应；
 - [ ] 许可证、第三方声明和来源记录完整；
 - [ ] Studio 提交后已由 Desktop 流程同步并验证嵌入；
-- [ ] 只有用户明确允许时才 push tag/Release。
-
+- [ ] 只有用户明确允许时才 push tag/Release；npm 首发还需要 npm 维护者账户的外部确认。

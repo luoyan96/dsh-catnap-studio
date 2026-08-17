@@ -46,7 +46,18 @@ npm.cmd install -g @deepseek-ai/dsh
 dsh --version
 ```
 
-## 三步安装
+## 一行安装（npm 发布后）
+
+Catnap Studio 发布到 npm 后，DSH 会自动下载插件和内置的猫咪素材：
+
+```powershell
+dsh plugin --profile web add dsh-client-ui-skin-catnap@latest
+dsh web
+```
+
+首次 npm 发布完成前，请使用下方 GitHub Release 安装包。安装或升级后都需要重启 `dsh web`。
+
+## GitHub Release 安装（当前可用）
 
 1. 从 [Releases](https://github.com/luoyan96/dsh-catnap-studio/releases) 下载与版本匹配的 `.tgz`。
 2. 在 PowerShell 中安装插件：
@@ -61,7 +72,7 @@ dsh plugin --profile web add "C:\path\to\dsh-client-ui-skin-catnap-0.3.1.tgz"
 dsh web
 ```
 
-安装或升级后需要重启 `dsh web`。卸载：
+卸载：
 
 ```powershell
 dsh plugin --profile web remove dsh-client-ui-skin-catnap
@@ -90,6 +101,10 @@ dsh web
 ```powershell
 dsh plugin --profile web remove @linxin666/dsh-web-ui-all
 ```
+
+## 发布到 npm
+
+发布流程、npm Trusted Publishing 设置和首次包名认领见 [docs/NPM_PUBLISHING.md](docs/NPM_PUBLISHING.md)。只有后续创建与 `package.json` 版本匹配的新 tag 时，GitHub Actions 才会同时发布 npm 包和 GitHub Release。
 
 ## 使用 Release 安装包
 

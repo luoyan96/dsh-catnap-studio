@@ -33,6 +33,9 @@
     }
   },
   "license": "BSD-3-Clause",
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": "^22.19.0 || >=24"
   },
