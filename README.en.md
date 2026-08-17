@@ -6,7 +6,7 @@ A cat-themed workspace suite for the DeepSeek Harness Web UI. It keeps the usefu
 
 > A community project built on DeepSeek Harness. **It is not an official DeepSeek product and is not endorsed by DeepSeek.**
 
-Current release line: **Catnap Studio v0.3.2**. Windows users who prefer a bundled experience can use the companion [Catnap Desktop](https://github.com/luoyan96/dsh-catnap-desktop) once it is published.
+Current release line: **Catnap Studio v0.3.3**. Windows users who prefer a bundled experience can use the companion [Catnap Desktop](https://github.com/luoyan96/dsh-catnap-desktop) once it is published.
 
 | Warm Paper Den | Moonlit Guardian | Cat Atelier |
 | --- | --- | --- |

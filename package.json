@@ -1,7 +1,7 @@
 {
   "name": "dsh-catnap-plugins",
   "description": "Catnap Studio suite for DeepSeek Harness: three cat themes, an interactive cat companion, task board, Git graph, file panel, live stats, and plugin settings",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "keywords": [
     "deepseek-harness",
     "dsh",

@@ -6,7 +6,7 @@
 
 > 社区项目，基于 DeepSeek Harness 构建，**不是 DeepSeek 官方产品，也不代表其背书**。
 
-当前发布线：**Catnap Studio v0.3.2**。Windows 用户若希望免除 Node 与 DSH CLI 配置，可使用配套的 [Catnap Desktop](https://github.com/luoyan96/dsh-catnap-desktop)（发布后可用）。
+当前发布线：**Catnap Studio v0.3.3**。Windows 用户若希望免除 Node 与 DSH CLI 配置，可使用配套的 [Catnap Desktop](https://github.com/luoyan96/dsh-catnap-desktop)（发布后可用）。
 
 | 暖纸猫窝 | 月夜守护 | 猫咪工坊 |
 | --- | --- | --- |

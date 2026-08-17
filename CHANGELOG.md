@@ -2,6 +2,20 @@
 
 All notable changes to Catnap Studio are documented here.
 
+## 0.3.3 — 2026-08-17
+
+- Added optional `dsh-better-sidebar` compatibility: when its client service
+  is present, Catnap leaves file, editor, terminal, and Git workbench surfaces
+  to Better Sidebar and does not activate the legacy Aion/Git clients.
+- Preserved the legacy workbench as the no-Better-Sidebar fallback, including
+  safe async disposal during feature detection.
+- Applied all three Catnap themes to Better Sidebar through shared DSH tokens,
+  lowered companion layering around workbench portals, and made the Settings
+  theme cards wrap safely beside the right workbench.
+- Added documented compatibility attribution, real DSH acceptance captures,
+  and the DSH Settings/Session runtime dependencies needed by the embedded
+  legacy host modules.
+
 ## 0.3.2 — 2026-08-17
 
 - Renamed the installable npm package and DSH module identifier from
