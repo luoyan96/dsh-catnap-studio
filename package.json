@@ -56,7 +56,7 @@
     "@deepseek-ai/cordis": "^4.0.1",
     "@linxin666/dsh-client-ui-aionui-panel": "0.1.12",
     "@linxin666/dsh-client-ui-git-graph": "0.1.12",
-    "@linxin666/dsh-client-ui-task-board": "0.1.12",
+    "@linxin666/dsh-client-ui-task-board": "0.2.0",
     "@linxin666/dsh-client-ui-web-ui-settings": "0.1.12",
     "@linxin666/dsh-live-stats": "0.1.12",
     "@types/node": "^22.20.0",
